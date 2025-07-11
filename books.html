@@ -3,422 +3,880 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 도서 탐색 - Sue Reading Academy</title>
+    <title>📚 Sue Reading Academy - Interactive Books</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            position: relative;
         }
-        .back-button {
-            position: absolute; top: 20px; left: 20px;
-            background: #6c757d; color: white;
-            padding: 10px 20px; border-radius: 8px;
-            text-decoration: none; font-weight: bold;
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 10px;
         }
-        .level-filters {
-            display: flex; justify-content: center; gap: 10px;
-            margin: 20px 0; flex-wrap: wrap;
+
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
         }
-        .level-button {
-            padding: 10px 20px; border: 2px solid #007bff;
-            background: white; color: #007bff; border-radius: 25px;
-            cursor: pointer; font-weight: bold; transition: all 0.3s ease;
-        }
-        .level-button.active { background: #007bff; color: white; }
+
         .books-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 25px;
+            margin-bottom: 30px;
         }
+
         .book-card {
-            background: white; border-radius: 15px; padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease; position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
+
         .book-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.2);
         }
-        .ai-badge {
-            position: absolute; top: 15px; right: 15px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white; padding: 5px 10px; border-radius: 12px;
-            font-size: 0.8rem; font-weight: bold;
+
+        .book-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        .book-cover {
-            width: 80px; height: 80px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; margin: 0 auto 20px;
+
+        .book-emoji {
+            font-size: 3rem;
         }
-        .book-title {
-            font-size: 1.2rem; font-weight: bold;
-            margin-bottom: 10px; text-align: center;
+
+        .book-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
         }
+
+        .book-author {
+            font-size: 1rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .book-level {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .book-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .book-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
         .book-actions {
-            display: flex; gap: 10px; margin-top: 20px;
+            display: flex;
+            gap: 10px;
         }
+
         .btn {
-            flex: 1; padding: 10px; border: none; border-radius: 8px;
-            cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            font-size: 0.95rem;
         }
-        .btn-primary { background: #007bff; color: white; }
-        .btn-success { background: #28a745; color: white; }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* 문제 풀이 모달 */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .quiz-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-content {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .quiz-progress {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #667eea;
+        }
+
+        .question-section {
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #28a74515, #20c99715);
+        }
+
+        .option.wrong {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #dc354515, #c8252515);
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .option.correct .option-letter {
+            background: #28a745;
+        }
+
+        .option.wrong .option-letter {
+            background: #dc3545;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1.1rem;
+        }
+
+        .answer-feedback {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .answer-feedback.show {
+            display: block;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .feedback-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .feedback-icon.correct {
+            background: #28a745;
+        }
+
+        .feedback-icon.wrong {
+            background: #dc3545;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .nav-btn.check {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-content {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            .quiz-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <a href="index.html" class="back-button">← 메인으로</a>
-            <h1>📖 AI 영어 도서 컬렉션</h1>
-            <p>AI가 생성한 맞춤형 문제로 학습하는 영어 도서</p>
-        </header>
-
-        <div class="level-filters">
-            <button class="level-button active" onclick="filterLevel('all')">전체</button>
-            <button class="level-button" onclick="filterLevel('level1')">Level 1</button>
-            <button class="level-button" onclick="filterLevel('level2')">Level 2</button>
-            <button class="level-button" onclick="filterLevel('level3')">Level 3</button>
-            <button class="level-button" onclick="filterLevel('level4')">Level 4</button>
-            <button class="level-button" onclick="filterLevel('level5')">Level 5</button>
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>📚 Interactive Reading Books</h1>
+            <p>Sue Reading Academy - 인터랙티브 영어 독서 시스템</p>
         </div>
 
-        <div class="books-grid" id="books-container">
-            <!-- 책 목록은 JavaScript로 동적 생성 -->
+        <!-- 도서 목록 -->
+        <div class="books-grid">
+            <!-- Level 3 Junie B. Jones -->
+            <div class="book-card" onclick="openBook('junie-b-jones', 3)">
+                <div class="book-header">
+                    <div class="book-emoji">👧</div>
+                    <div class="book-info">
+                        <h3>Junie B. Jones</h3>
+                        <div class="book-author">Barbara Park</div>
+                    </div>
+                </div>
+                <div class="book-level">Level 3</div>
+                <div class="book-description">
+                    유치원생 Junie B.의 재미있고 엉뚱한 학교생활 모험담입니다.
+                </div>
+                <div class="book-stats">
+                    <span>📖 60 문제</span>
+                    <span>⏱️ 90분</span>
+                    <span>🎯 중급</span>
+                </div>
+                <div class="book-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); startQuiz('junie-b-jones', 3)">
+                        🎮 문제 풀기
+                    </button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); window.open('junie-b.html', '_blank')">
+                        🚀 레벨테스트
+                    </button>
+                </div>
+            </div>
+
+            <!-- Level 3 Magic Tree House -->
+            <div class="book-card" onclick="openBook('magic-tree-house', 3)">
+                <div class="book-header">
+                    <div class="book-emoji">🌳</div>
+                    <div class="book-info">
+                        <h3>Magic Tree House</h3>
+                        <div class="book-author">Mary Pope Osborne</div>
+                    </div>
+                </div>
+                <div class="book-level">Level 3</div>
+                <div class="book-description">
+                    Jack과 Annie가 마법의 나무집으로 시간여행을 떠나는 모험 이야기입니다.
+                </div>
+                <div class="book-stats">
+                    <span>📖 60 문제</span>
+                    <span>⏱️ 90분</span>
+                    <span>🎯 중급</span>
+                </div>
+                <div class="book-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); startQuiz('magic-tree-house', 3)">
+                        🎮 문제 풀기
+                    </button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); window.open('level-test-execute.html', '_blank')">
+                        🚀 레벨테스트
+                    </button>
+                </div>
+            </div>
+
+            <!-- Level 2 Henry and Mudge -->
+            <div class="book-card" onclick="openBook('henry-mudge', 2)">
+                <div class="book-header">
+                    <div class="book-emoji">👦</div>
+                    <div class="book-info">
+                        <h3>Henry and Mudge</h3>
+                        <div class="book-author">Cynthia Rylant</div>
+                    </div>
+                </div>
+                <div class="book-level">Level 2</div>
+                <div class="book-description">
+                    외로운 소년 Henry와 그의 거대한 개 Mudge의 따뜻한 우정 이야기입니다.
+                </div>
+                <div class="book-stats">
+                    <span>📖 60 문제</span>
+                    <span>⏱️ 75분</span>
+                    <span>🎯 초중급</span>
+                </div>
+                <div class="book-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); startQuiz('henry-mudge', 2)">
+                        🎮 문제 풀기
+                    </button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); window.open('henry-mudge.html', '_blank')">
+                        🚀 레벨테스트
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="static/js/books-bundle.js"></script>
-    
-    <script>
-        let currentFilter = 'all';
+    <!-- 문제 풀이 모달 -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-content">
+            <button class="close-btn" onclick="closeQuiz()">&times;</button>
+            
+            <div class="quiz-header">
+                <div class="quiz-title" id="quizTitle">문제 풀이</div>
+                <div class="quiz-progress" id="quizProgress">1/60</div>
+            </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof window.SUREADING_DATA !== 'undefined') {
-                displayBooks();
+            <div class="question-section">
+                <div class="question-text" id="questionText">
+                    문제를 불러오는 중...
+                </div>
+
+                <div class="options-list" id="optionsList">
+                    <!-- 선택지들이 동적으로 생성됩니다 -->
+                </div>
+
+                <div class="answer-feedback" id="answerFeedback">
+                    <div class="feedback-header">
+                        <div class="feedback-icon" id="feedbackIcon">✓</div>
+                        <div>
+                            <div id="feedbackText">정답입니다!</div>
+                            <small id="correctAnswer">정답: A - Option text</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()" disabled>
+                    ⬅️ 이전
+                </button>
+                
+                <button class="nav-btn check" id="checkBtn" onclick="checkAnswer()">
+                    ✅ 정답 확인
+                </button>
+                
+                <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                    다음 ➡️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================ 샘플 문제 데이터 ================
+        const questionsData = {
+            'junie-b-jones': [
+                {
+                    question: "How old is Junie B. Jones?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 1
+                },
+                {
+                    question: "What grade is Junie B. in?",
+                    options: ["Preschool", "Kindergarten", "First grade", "Second grade"],
+                    correct: 1
+                },
+                {
+                    question: "How does Junie B. talk?",
+                    options: ["Very quietly", "Like a grown-up", "In a funny, childlike way", "Very loudly only"],
+                    correct: 2
+                },
+                {
+                    question: "What does Junie B. call her teacher?",
+                    options: ["Teacher", "Mrs. Smith", "That man", "Nice lady"],
+                    correct: 2
+                },
+                {
+                    question: "How does Junie B. feel about school at first?",
+                    options: ["Loves it", "Hates it", "Scared and unsure", "Bored"],
+                    correct: 2
+                }
+            ],
+            'magic-tree-house': [
+                {
+                    question: "Who are the main characters in Magic Tree House?",
+                    options: ["Jack and Jill", "Jack and Annie", "Tom and Annie", "Jack and Sarah"],
+                    correct: 1
+                },
+                {
+                    question: "Where do Jack and Annie find the tree house?",
+                    options: ["In their backyard", "In Frog Creek woods", "At school", "In the park"],
+                    correct: 1
+                },
+                {
+                    question: "What is special about the tree house?",
+                    options: ["Very tall", "Magic - travels through time", "Has toys", "Very old"],
+                    correct: 1
+                },
+                {
+                    question: "How do Jack and Annie travel in time?",
+                    options: ["Close eyes and wish", "Point to picture in book", "Say magic words", "Turn a key"],
+                    correct: 1
+                },
+                {
+                    question: "What does Jack always carry with him?",
+                    options: ["Backpack", "Notebook and pencil", "Camera", "Map"],
+                    correct: 1
+                }
+            ],
+            'henry-mudge': [
+                {
+                    question: "Who is Henry?",
+                    options: ["A dog", "A little boy", "A cat", "A grown-up"],
+                    correct: 1
+                },
+                {
+                    question: "Who is Mudge?",
+                    options: ["Henry's friend", "Henry's big dog", "Henry's brother", "Henry's teacher"],
+                    correct: 1
+                },
+                {
+                    question: "What kind of dog is Mudge?",
+                    options: ["Small and fast", "Big and friendly", "Mean and loud", "Tiny and cute"],
+                    correct: 1
+                },
+                {
+                    question: "How did Henry feel before he had Mudge?",
+                    options: ["Very happy", "Lonely", "Angry", "Excited"],
+                    correct: 1
+                },
+                {
+                    question: "Why was Henry lonely?",
+                    options: ["No friends at school", "No brothers or sisters on his street", "Parents were busy", "Didn't like people"],
+                    correct: 1
+                }
+            ]
+        };
+
+        // ================ 퀴즈 상태 변수 ================
+        let currentBook = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let answerChecked = false;
+
+        // ================ 퀴즈 시작 함수 ================
+        function startQuiz(bookId, level) {
+            console.log(`🎮 퀴즈 시작: ${bookId} (Level ${level})`);
+            
+            currentBook = bookId;
+            currentQuestions = questionsData[bookId] || [];
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentQuestions.length);
+            answerChecked = false;
+
+            if (currentQuestions.length === 0) {
+                alert('문제 데이터를 불러올 수 없습니다.');
+                return;
+            }
+
+            // 모달 열기
+            document.getElementById('quizModal').classList.add('show');
+            
+            // 퀴즈 제목 설정
+            const bookTitles = {
+                'junie-b-jones': 'Junie B. Jones Quiz',
+                'magic-tree-house': 'Magic Tree House Quiz',
+                'henry-mudge': 'Henry and Mudge Quiz'
+            };
+            
+            document.getElementById('quizTitle').textContent = bookTitles[bookId] || '문제 풀이';
+            
+            // 첫 번째 문제 표시
+            showQuestion(0);
+        }
+
+        // ================ 문제 표시 함수 ================
+        function showQuestion(index) {
+            if (index < 0 || index >= currentQuestions.length) return;
+
+            currentQuestionIndex = index;
+            answerChecked = false;
+            const question = currentQuestions[index];
+
+            // 진행률 업데이트
+            document.getElementById('quizProgress').textContent = `${index + 1}/${currentQuestions.length}`;
+
+            // 문제 텍스트 설정
+            document.getElementById('questionText').textContent = question.question;
+
+            // 선택지 생성
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            question.options.forEach((option, optIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.onclick = () => selectOption(optIndex);
+
+                optionDiv.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + optIndex)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+
+                optionsList.appendChild(optionDiv);
+            });
+
+            // 피드백 숨기기
+            document.getElementById('answerFeedback').classList.remove('show');
+
+            // 버튼 상태 업데이트
+            updateQuizButtons();
+
+            // 이전 답변 복원
+            if (userAnswers[index] !== undefined) {
+                selectOption(userAnswers[index], false);
+            }
+        }
+
+        // ================ 선택지 선택 함수 ================
+        function selectOption(optionIndex, saveAnswer = true) {
+            if (answerChecked) return;
+
+            // 이전 선택 해제
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // 새 선택 적용
+            const options = document.querySelectorAll('.option');
+            if (options[optionIndex]) {
+                options[optionIndex].classList.add('selected');
+            }
+
+            // 답변 저장
+            if (saveAnswer) {
+                userAnswers[currentQuestionIndex] = optionIndex;
+            }
+
+            // 버튼 상태 업데이트
+            updateQuizButtons();
+        }
+
+        // ================ 정답 확인 함수 ================
+        function checkAnswer() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert('답을 선택해주세요!');
+                return;
+            }
+
+            answerChecked = true;
+            const question = currentQuestions[currentQuestionIndex];
+            const userAnswer = userAnswers[currentQuestionIndex];
+            const isCorrect = userAnswer === question.correct;
+
+            // 선택지 스타일 업데이트
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.onclick = null; // 클릭 비활성화
+                
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === userAnswer && !isCorrect) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            // 피드백 표시
+            showAnswerFeedback(isCorrect, question);
+
+            // 버튼 상태 업데이트
+            updateQuizButtons();
+        }
+
+        // ================ 정답 피드백 표시 함수 ================
+        function showAnswerFeedback(isCorrect, question) {
+            const feedback = document.getElementById('answerFeedback');
+            const icon = document.getElementById('feedbackIcon');
+            const text = document.getElementById('feedbackText');
+            const correct = document.getElementById('correctAnswer');
+
+            icon.textContent = isCorrect ? '✓' : '✗';
+            icon.className = `feedback-icon ${isCorrect ? 'correct' : 'wrong'}`;
+            text.textContent = isCorrect ? '정답입니다!' : '틀렸습니다.';
+            correct.textContent = `정답: ${String.fromCharCode(65 + question.correct)} - ${question.options[question.correct]}`;
+
+            feedback.classList.add('show');
+        }
+
+        // ================ 퀴즈 버튼 상태 업데이트 ================
+        function updateQuizButtons() {
+            const checkBtn = document.getElementById('checkBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+
+            if (answerChecked) {
+                checkBtn.style.display = 'none';
+                nextBtn.style.display = 'block';
+                
+                if (currentQuestionIndex === currentQuestions.length - 1) {
+                    nextBtn.textContent = '완료 ✅';
+                } else {
+                    nextBtn.textContent = '다음 ➡️';
+                }
             } else {
-                setTimeout(() => {
-                    if (typeof window.SUREADING_DATA !== 'undefined') {
-                        displayBooks();
-                    }
-                }, 1000);
+                checkBtn.style.display = 'block';
+                nextBtn.style.display = 'none';
+                checkBtn.disabled = userAnswers[currentQuestionIndex] === undefined;
+            }
+
+            prevBtn.disabled = currentQuestionIndex === 0;
+        }
+
+        // ================ 네비게이션 함수들 ================
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex === currentQuestions.length - 1) {
+                // 퀴즈 완료
+                finishQuiz();
+            } else {
+                showQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        // ================ 퀴즈 완료 함수 ================
+        function finishQuiz() {
+            const correctCount = userAnswers.filter((answer, index) => 
+                answer === currentQuestions[index].correct
+            ).length;
+            
+            const percentage = Math.round((correctCount / currentQuestions.length) * 100);
+            
+            alert(`퀴즈 완료!\n\n정답: ${correctCount}/${currentQuestions.length}\n점수: ${percentage}%`);
+            
+            closeQuiz();
+        }
+
+        // ================ 퀴즈 닫기 함수 ================
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.remove('show');
+        }
+
+        // ================ 기타 함수들 ================
+        function openBook(bookId, level) {
+            // 전체 레벨테스트로 연결
+            if (bookId === 'junie-b-jones') {
+                window.open('junie-b.html', '_blank');
+            } else if (bookId === 'magic-tree-house') {
+                window.open('level-test-execute.html', '_blank');
+            } else if (bookId === 'henry-mudge') {
+                window.open('henry-mudge.html', '_blank');
+            } else {
+                alert(`📖 ${bookId} 레벨테스트는 준비 중입니다!`);
+            }
+        }
+
+        // ================ 키보드 이벤트 ================
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('quizModal');
+            if (!modal.classList.contains('show')) return;
+
+            // ESC로 모달 닫기
+            if (e.key === 'Escape') {
+                closeQuiz();
+            }
+            
+            // 숫자 키로 선택지 선택 (1-4)
+            const num = parseInt(e.key);
+            if (num >= 1 && num <= 4 && !answerChecked) {
+                selectOption(num - 1);
+            }
+            
+            // Enter로 정답 확인 또는 다음 문제
+            if (e.key === 'Enter') {
+                if (!answerChecked) {
+                    checkAnswer();
+                } else {
+                    nextQuestion();
+                }
             }
         });
 
-        function displayBooks() {
-            const container = document.getElementById('books-container');
-            let booksHtml = '';
-            
-            Object.entries(window.SUREADING_DATA.books).forEach(([level, books]) => {
-                if (currentFilter === 'all' || currentFilter === level) {
-                    books.forEach(book => {
-                        const hasQuestions = window.SUREADING_DATA.questions[book.id];
-                        const questionCount = hasQuestions ? 
-                            Object.values(hasQuestions.chapters)
-                                .reduce((total, chapter) => total + (chapter.questions ? chapter.questions.length : 0), 0) : 0;
-                        
-                        // AI 생성 문제가 있는지 확인
-                        const hasAIQuestions = questionCount > 5; // AI 생성은 보통 5개 이상
-                        
-                        booksHtml += `
-                            <div class="book-card" data-level="${level}">
-                                ${hasAIQuestions ? '<div class="ai-badge">🤖 AI 문제</div>' : ''}
-                                
-                                <div class="book-cover" style="background: ${book.coverColor};">
-                                    ${book.cover}
-                                </div>
-                                
-                                <div class="book-title">${book.title}</div>
-                                <div style="text-align: center; color: #666; margin-bottom: 15px;">
-                                    by ${book.author}
-                                </div>
-                                
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; font-size: 0.9rem;">
-                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 5px; text-align: center;">
-                                        <strong>${book.words.toLocaleString()}</strong><br>
-                                        <small>단어</small>
-                                    </div>
-                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 5px; text-align: center;">
-                                        <strong>${questionCount}</strong><br>
-                                        <small>문제</small>
-                                    </div>
-                                </div>
-                                
-                                <div style="font-size: 0.9rem; color: #666; line-height: 1.4; margin-bottom: 20px;">
-                                    ${book.summary.length > 100 ? book.summary.substring(0, 100) + '...' : book.summary}
-                                </div>
-                                
-                                <div class="book-actions">
-                                    <button class="btn btn-primary" onclick="startBookQuiz('${book.id}')">
-                                        📖 학습 시작
-                                    </button>
-                                    <button class="btn btn-success" onclick="viewQuestions('${book.id}')">
-                                        🤖 AI 문제
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            });
-            
-            container.innerHTML = booksHtml;
-        }
-
-        function filterLevel(level) {
-            currentFilter = level;
-            
-            document.querySelectorAll('.level-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            displayBooks();
-        }
-
-        function startBookQuiz(bookId) {
-            alert(`📖 "${bookId}" 학습을 시작합니다!\n\n🤖 AI가 생성한 맞춤형 문제와 함께 학습하세요!`);
-        }
-
-        function viewQuestions(bookId) {
-            const questions = window.SUREADING_DATA.questions[bookId];
-            if (questions) {
-                let totalQuestions = 0;
-                Object.values(questions.chapters).forEach(chapter => {
-                    totalQuestions += chapter.questions ? chapter.questions.length : 0;
-                });
-                
-                alert(`🤖 "${bookId}" AI 문제 정보\n\n` +
-                      `📊 총 ${Object.keys(questions.chapters).length}개 챕터\n` +
-                      `❓ 총 ${totalQuestions}개 문제\n` +
-                      `🎯 AI가 자동 생성한 고품질 문제들\n\n` +
-                      `곧 실제 문제 풀이 페이지로 이동할 예정입니다!`);
-            } else {
-                alert('이 책에는 아직 문제가 없습니다.');
-            }
-        }
+        console.log('📚 Books.html 완전 로드 완료!');
     </script>
 </body>
 </html>
-
-<script>
-// 기존 스크립트에 추가
-function startBookQuiz(bookId) {
-    if (!userManager.isLoggedIn()) {
-        alert('⚠️ 로그인이 필요합니다.');
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    // 진도 확인
-    const progress = userManager.getBookProgress(bookId);
-    const completedQuestions = progress ? progress.completed : 0;
-    
-    const confirmMessage = completedQuestions > 0 ? 
-        `📖 "${bookId}" 학습을 계속하시겠습니까?\n\n이전 완료: ${completedQuestions}문제\n🎯 새로운 AI 문제로 학습합니다!` :
-        `📖 "${bookId}" 학습을 시작하시겠습니까?\n\n🤖 AI가 생성한 맞춤형 문제와 함께 학습하세요!`;
-    
-    if (confirm(confirmMessage)) {
-        window.location.href = `quiz.html?book=${bookId}`;
-    }
-}
-
-function viewBookQuestions(bookId) {
-    const questions = window.SUREADING_DATA.questions[bookId];
-    if (questions) {
-        let totalQuestions = 0;
-        Object.values(questions.chapters).forEach(chapter => {
-            totalQuestions += chapter.questions ? chapter.questions.length : 0;
-        });
-        
-        const progress = userManager.getBookProgress(bookId);
-        const completedQuestions = progress ? progress.completed : 0;
-        
-        alert(`🤖 "${bookId}" AI 문제 정보\n\n` +
-              `📊 총 ${Object.keys(questions.chapters).length}개 챕터\n` +
-              `❓ 총 ${totalQuestions}개 AI 문제\n` +
-              `✅ 완료: ${completedQuestions}개\n` +
-              `🎯 AI가 자동 생성한 고품질 문제들\n\n` +
-              `지금 바로 학습을 시작해보세요!`);
-    } else {
-        alert('이 책에는 아직 문제가 없습니다.');
-    }
-}
-</script>
-
-<!-- 사용자 관리 시스템 로드 -->
-<script src="static/js/user-manager.js"></script>
-
-<script>
-// 실제 고유 링크 생성 및 표시
-function generateRealUniqueLinks() {
-    const books = document.querySelectorAll('.book-card, [data-book-id]');
-    
-    books.forEach(bookElement => {
-        const bookId = bookElement.getAttribute('data-book-id') || 
-                       bookElement.getAttribute('onclick')?.match(/startBookQuiz\('(.+?)'\)/)?.[1];
-        
-        if (bookId && BOOK_LINK_MAP[bookId]) {
-            const bookSlug = BOOK_LINK_MAP[bookId];
-            const bookLevel = BOOK_LEVEL_MAP[bookId];
-            const uniqueUrl = `/level-test/start/${bookLevel}/${bookSlug}`;
-            
-            // 고유 링크 정보 표시
-            const linkInfo = document.createElement('div');
-            linkInfo.innerHTML = `
-                <div style="margin-top: 10px; padding: 8px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-                    <strong>🔗 고유 링크:</strong><br>
-                    <code style="font-size: 0.8rem; color: #667eea;">${uniqueUrl}</code>
-                    <button onclick="copyUniqueLink('${uniqueUrl}')" style="margin-left: 10px; padding: 2px 8px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.7rem;">
-                        📋 복사
-                    </button>
-                </div>
-            `;
-            
-            bookElement.appendChild(linkInfo);
-        }
-    });
-}
-
-// 고유 링크 복사 함수
-function copyUniqueLink(uniqueUrl) {
-    const fullUrl = "https://tonyhwang1004.github.io" + uniqueUrl;
-    navigator.clipboard.writeText(fullUrl).then(() => {
-        alert(`🔗 고유 링크가 복사되었습니다!\n\n${fullUrl}`);
-    }).catch(() => {
-        prompt('🔗 고유 링크를 복사하세요:', fullUrl);
-    });
-}
-
-// 페이지 로드 시 고유 링크 표시
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        generateRealUniqueLinks();
-    }, 2000);
-});
-
-console.log('🔗 실제 고유 링크 시스템 로드 완료');
-</script>
-
-<script>
-// 실제 고유 링크 생성 및 표시
-function generateRealUniqueLinks() {
-    const books = document.querySelectorAll('.book-card, [data-book-id]');
-    
-    books.forEach(bookElement => {
-        const bookId = bookElement.getAttribute('data-book-id') || 
-                       bookElement.getAttribute('onclick')?.match(/startBookQuiz\('(.+?)'\)/)?.[1];
-        
-        if (bookId && BOOK_LINK_MAP[bookId]) {
-            const bookSlug = BOOK_LINK_MAP[bookId];
-            const bookLevel = BOOK_LEVEL_MAP[bookId];
-            const uniqueUrl = `/level-test/start/${bookLevel}/${bookSlug}`;
-            
-            // 고유 링크 정보 표시
-            const linkInfo = document.createElement('div');
-            linkInfo.innerHTML = `
-                <div style="margin-top: 10px; padding: 8px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-                    <strong>🔗 고유 링크:</strong><br>
-                    <code style="font-size: 0.8rem; color: #667eea;">${uniqueUrl}</code>
-                    <button onclick="copyUniqueLink('${uniqueUrl}')" style="margin-left: 10px; padding: 2px 8px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.7rem;">
-                        📋 복사
-                    </button>
-                </div>
-            `;
-            
-            bookElement.appendChild(linkInfo);
-        }
-    });
-}
-
-// 고유 링크 복사 함수
-function copyUniqueLink(uniqueUrl) {
-    const fullUrl = "https://tonyhwang1004.github.io" + uniqueUrl;
-    navigator.clipboard.writeText(fullUrl).then(() => {
-        alert(`🔗 고유 링크가 복사되었습니다!\n\n${fullUrl}`);
-    }).catch(() => {
-        prompt('🔗 고유 링크를 복사하세요:', fullUrl);
-    });
-}
-
-// 페이지 로드 시 고유 링크 표시
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        generateRealUniqueLinks();
-    }, 2000);
-});
-
-console.log('🔗 실제 고유 링크 시스템 로드 완료');
-</script>
-
-<script>
-// 루트 기반 고유 링크 매핑 (GitHub Pages 호환)
-const ROOT_LINK_MAP = {
-   'PP001': 'peppa-pig.html',
-   'FT001': 'frog-toad.html', 
-   'HM001': 'henry-mudge.html',
-   'EP001': 'elephant-piggie.html',
-   'CA001': 'charlottes-web.html',
-   'LR001': 'lord-rings.html',
-   'JB001': 'junie-b.html'
-};
-
-// 간단한 고유 링크 표시 (루트 기반)
-function showSimpleUniqueLinks() {
-   const books = document.querySelectorAll('.book-card, [data-book-id]');
-   
-   books.forEach(bookElement => {
-       const bookId = bookElement.getAttribute('data-book-id') || 
-                      bookElement.getAttribute('onclick')?.match(/startBookQuiz\('(.+?)'\)/)?.[1];
-       
-       if (bookId && ROOT_LINK_MAP[bookId]) {
-           const uniqueFile = ROOT_LINK_MAP[bookId];
-           const simpleUrl = `/${uniqueFile.replace('.html', '')}`;
-           
-           // 고유 링크 정보 표시
-           const linkInfo = document.createElement('div');
-           linkInfo.innerHTML = `
-               <div style="margin-top: 10px; padding: 8px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-                   <strong>🔗 간단 링크:</strong><br>
-                   <code style="font-size: 0.9rem; color: #667eea;">tonyhwang1004.github.io${simpleUrl}</code>
-                   <button onclick="copySimpleLink('${simpleUrl}')" style="margin-left: 10px; padding: 2px 8px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.7rem;">
-                       📋 복사
-                   </button>
-               </div>
-           `;
-           
-           bookElement.appendChild(linkInfo);
-       }
-   });
-}
-
-// 간단 링크 복사 함수
-function copySimpleLink(simpleUrl) {
-   const fullUrl = `https://tonyhwang1004.github.io${simpleUrl}`;
-   navigator.clipboard.writeText(fullUrl).then(() => {
-       alert(`🔗 간단 링크가 복사되었습니다!\n\n${fullUrl}`);
-   }).catch(() => {
-       prompt('🔗 간단 링크를 복사하세요:', fullUrl);
-   });
-}
-
-// 페이지 로드 시 간단 링크 표시
-document.addEventListener('DOMContentLoaded', function() {
-   setTimeout(() => {
-       showSimpleUniqueLinks();
-   }, 2000);
-});
-
-console.log('🔗 루트 기반 간단 링크 시스템 로드 완료');
-</script>
