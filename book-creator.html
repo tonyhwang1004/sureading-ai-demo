@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 책 만들어줘 - Sue Reading Academy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding-top: 60px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        
+        .creator-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .academy-logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .creator-form {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .template-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .template-card:hover, .template-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .template-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Sue Reading Academy</a>
+    
+    <div class="container">
+        <div class="creator-header">
+            <div class="academy-logo">📚 책 만들어줘</div>
+            <h1>Sue Reading Academy 자동 책 생성 시스템</h1>
+            <p>선생님이 원하는 영어 도서와 AI 문제를 자동으로 생성합니다</p>
+        </div>
+
+        <div class="creator-form">
+            <form id="book-creator-form">
+                <!-- 1. 템플릿 선택 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        🎯 <span>1단계: 책 템플릿 선택</span>
+                    </div>
+                    
+                    <div class="template-grid">
+                        <div class="template-card" data-template="story">
+                            <div class="template-icon">📖</div>
+                            <h4>스토리북</h4>
+                            <p>이야기 중심의 읽기 교재</p>
+                        </div>
+                        <div class="template-card" data-template="educational">
+                            <div class="template-icon">🧠</div>
+                            <h4>교육자료</h4>
+                            <p>학습 목적의 정보 전달</p>
+                        </div>
+                        <div class="template-card" data-template="conversation">
+                            <div class="template-icon">💬</div>
+                            <h4>대화형</h4>
+                            <p>대화 중심의 실용 영어</p>
+                        </div>
+                        <div class="template-card" data-template="science">
+                            <div class="template-icon">🔬</div>
+                            <h4>과학/정보</h4>
+                            <p>과학 지식 전달 교재</p>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selected-template" name="template" required>
+                </div>
+
+                <!-- 2. 기본 정보 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        📋 <span>2단계: 책 기본 정보</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="book-title">책 제목</label>
+                            <input type="text" id="book-title" name="title" required 
+                                   placeholder="예: The Magic Forest Adventure">
+                        </div>
+                        <div class="form-group">
+                            <label for="book-author">저자명</label>
+                            <input type="text" id="book-author" name="author" required 
+                                   placeholder="예: Sue Reading Academy">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="book-level">레벨</label>
+                            <select id="book-level" name="level" required>
+                                <option value="">레벨 선택</option>
+                                <option value="level1">Level 1 (초급)</option>
+                                <option value="level2">Level 2 (초중급)</option>
+                                <option value="level3">Level 3 (중급)</option>
+                                <option value="level4">Level 4 (중고급)</option>
+                                <option value="level5">Level 5 (고급)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="book-words">목표 단어 수</label>
+                            <select id="book-words" name="words" required>
+                                <option value="">단어 수 선택</option>
+                                <option value="500">500단어 (짧은 이야기)</option>
+                                <option value="1000">1,000단어 (보통 이야기)</option>
+                                <option value="2000">2,000단어 (긴 이야기)</option>
+                                <option value="3000">3,000단어 (장편)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="book-summary">책 요약 또는 주제</label>
+                        <textarea id="book-summary" name="summary" required 
+                                  placeholder="예: 마법의 숲에서 모험을 떠나는 어린이의 이야기. 용기와 우정의 가치를 배울 수 있는 내용."></textarea>
+                    </div>
+                </div>
+
+                <!-- 3. AI 문제 설정 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        🤖 <span>3단계: AI 문제 생성 설정</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="question-count">생성할 문제 수</label>
+                            <select id="question-count" name="questionCount" required>
+                                <option value="10">10문제 (기본)</option>
+                                <option value="15">15문제 (표준)</option>
+                                <option value="20">20문제 (많음)</option>
+                                <option value="25">25문제 (매우 많음)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="difficulty-focus">난이도 중점</label>
+                            <select id="difficulty-focus" name="difficulty" required>
+                                <option value="mixed">혼합 (추천)</option>
+                                <option value="easy">쉬움 중심</option>
+                                <option value="medium">보통 중심</option>
+                                <option value="hard">어려움 중심</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>문제 유형 선택 (중복 선택 가능)</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                            <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                <input type="checkbox" name="questionTypes" value="vocabulary" checked> 어휘 이해
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                <input type="checkbox" name="questionTypes" value="factual" checked> 사실 이해
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                <input type="checkbox" name="questionTypes" value="inference" checked> 추론 이해
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                <input type="checkbox" name="questionTypes" value="critical" checked> 비판적 사고
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                <input type="checkbox" name="questionTypes" value="synthesis" checked> 종합 이해
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 생성 버튼 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        🚀 <span>4단계: 책과 문제 생성</span>
+                    </div>
+                    
+                    <div class="progress-bar" id="progress-bar" style="display: none;">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">
+                            📚 책 만들어줘! (AI 자동 생성)
+                        </button>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+                        ⏱️ 예상 소요시간: 30초 ~ 1분<br>
+                        🤖 AI가 맞춤형 영어 도서와 문제를 자동 생성합니다
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 결과 표시 영역 -->
+        <div class="result-section" id="result-section">
+            <h2>🎉 책 생성 완료!</h2>
+            <div id="generation-results"></div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-success" onclick="downloadBook()">📥 파일 다운로드</button>
+                <button class="btn btn-primary" onclick="addToLibrary()">📚 도서관에 추가</button>
+                <button class="btn btn-secondary" onclick="createNewBook()">🔄 새 책 만들기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스크립트 -->
+    <script src="static/js/user-manager.js"></script>
+    
+    <script>
+        let selectedTemplate = null;
+        let generatedBook = null;
+
+        // 템플릿 선택 처리
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // 이전 선택 해제
+                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                
+                // 새 선택 적용
+                this.classList.add('selected');
+                selectedTemplate = this.dataset.template;
+                document.getElementById('selected-template').value = selectedTemplate;
+                
+                console.log(`템플릿 선택: ${selectedTemplate}`);
+            });
+        });
+
+        // 폼 제출 처리
+        document.getElementById('book-creator-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!selectedTemplate) {
+                alert('❗ 책 템플릿을 선택해주세요.');
+                return;
+            }
+            
+            // 폼 데이터 수집
+            const formData = new FormData(this);
+            const bookData = {
+                template: selectedTemplate,
+                title: formData.get('title'),
+                author: formData.get('author'),
+                level: formData.get('level'),
+                words: parseInt(formData.get('words')),
+                summary: formData.get('summary'),
+                questionCount: parseInt(formData.get('questionCount')),
+                difficulty: formData.get('difficulty'),
+                questionTypes: formData.getAll('questionTypes')
+            };
+            
+            console.log('📚 책 생성 요청:', bookData);
+            
+            // 생성 시작
+            await generateBook(bookData);
+        });
+
+        async function generateBook(bookData) {
+            // 진행 표시
+            showProgress();
+            
+            try {
+                // 1단계: 책 ID 생성
+                updateProgress(20, '📋 책 정보 설정 중...');
+                const bookId = generateBookId(bookData.title);
+                
+                // 2단계: 책 데이터 구조 생성
+                updateProgress(40, '📖 책 구조 생성 중...');
+                await sleep(500);
+                
+                const book = createBookStructure(bookId, bookData);
+                
+                // 3단계: AI 문제 생성
+                updateProgress(60, '🤖 AI 문제 생성 중...');
+                await sleep(1000);
+                
+                const questions = generateAIQuestions(bookId, bookData);
+                
+                // 4단계: 파일 생성
+                updateProgress(80, '📁 파일 생성 중...');
+                await sleep(500);
+                
+                generatedBook = {
+                    book: book,
+                    questions: questions,
+                    bookData: bookData
+                };
+                
+                // 5단계: 완료
+                updateProgress(100, '✅ 생성 완료!');
+                await sleep(300);
+                
+                showResults();
+                
+            } catch (error) {
+                console.error('책 생성 오류:', error);
+                alert('❌ 책 생성 중 오류가 발생했습니다: ' + error.message);
+                hideProgress();
+            }
+        }
+
+        function generateBookId(title) {
+            // 제목을 기반으로 고유 ID 생성
+            const words = title.split(' ');
+            const prefix = words.slice(0, 2).map(word => 
+                word.charAt(0).toUpperCase()
+            ).join('');
+            const timestamp = Date.now().toString().slice(-3);
+            return prefix + timestamp;
+        }
+
+        function createBookStructure(bookId, bookData) {
+            return {
+                id: bookId,
+                title: bookData.title,
+                author: bookData.author,
+                words: bookData.words,
+                cover: getRandomEmoji(bookData.template),
+                coverColor: getRandomColor(),
+                summary: bookData.summary,
+                level: bookData.level,
+                template: bookData.template,
+                createdAt: new Date().toISOString(),
+                createdBy: userManager.currentUser?.name || 'Sue Reading Academy'
+            };
+        }
+
+        function generateAIQuestions(bookId, bookData) {
+            const questions = {
+                bookId: bookId,
+                metadata: {
+                    totalQuestions: bookData.questionCount,
+                    difficulty: bookData.difficulty,
+                    types: bookData.questionTypes,
+                    generatedAt: new Date().toISOString(),
+                    generatedBy: 'Sue Reading Academy AI'
+                },
+                chapters: {
+                    "chapter1": {
+                        chapterTitle: `${bookData.title} - Reading Comprehension`,
+                        questions: []
+                    }
+                }
+            };
+
+            // AI 문제 생성 (템플릿 기반)
+            for (let i = 0; i < bookData.questionCount; i++) {
+                const questionType = bookData.questionTypes[i % bookData.questionTypes.length];
+                const question = generateQuestionByType(questionType, bookData, i + 1);
+                questions.chapters.chapter1.questions.push(question);
+            }
+
+            return questions;
+        }
+
+        function generateQuestionByType(type, bookData, questionNum) {
+            const templates = {
+                vocabulary: {
+                    questions: [
+                        `What does the word "[WORD]" mean in the context of ${bookData.title}?`,
+                        `Which word best describes the main character's feeling?`,
+                        `What is the meaning of "[WORD]" as used in the story?`
+                    ],
+                    options: [
+                        ["Happy", "Sad", "Excited", "Worried"],
+                        ["Big", "Small", "Beautiful", "Scary"],
+                        ["Fast", "Slow", "Careful", "Dangerous"]
+                    ]
+                },
+                factual: {
+                    questions: [
+                        `Where does the story in ${bookData.title} take place?`,
+                        `What happens at the beginning of the story?`,
+                        `Who are the main characters in ${bookData.title}?`
+                    ],
+                    options: [
+                        ["In a forest", "In a city", "At school", "At home"],
+                        ["The character goes to sleep", "The character meets a friend", "The character finds something", "The character gets lost"],
+                        ["A boy and a girl", "A teacher and students", "A family", "Friends"]
+                    ]
+                },
+                inference: {
+                    questions: [
+                        `Why do you think the main character made that choice?`,
+                        `What can we infer about the character's personality?`,
+                        `What might happen next in the story?`
+                    ],
+                    options: [
+                        ["Because they were brave", "Because they were scared", "Because they were curious", "Because they were tired"],
+                        ["They are kind", "They are mean", "They are funny", "They are serious"],
+                        ["They will go home", "They will continue the adventure", "They will meet someone new", "They will solve the problem"]
+                    ]
+                },
+                critical: {
+                    questions: [
+                        `Do you agree with the main character's decision? Why?`,
+                        `What would you do differently in this situation?`,
+                        `What lesson can we learn from ${bookData.title}?`
+                    ],
+                    options: [
+                        ["Yes, it was the right choice", "No, there was a better way", "Partially, but could be improved", "It depends on the situation"],
+                        ["Be more careful", "Ask for help", "Think before acting", "Trust my friends"],
+                        ["Always be brave", "Friends are important", "Hard work pays off", "Be kind to others"]
+                    ]
+                },
+                synthesis: {
+                    questions: [
+                        `How does this story connect to real life?`,
+                        `What is the main theme of ${bookData.title}?`,
+                        `How do all the events in the story work together?`
+                    ],
+                    options: [
+                        ["It teaches us about friendship", "It shows us how to be brave", "It helps us understand family", "It explains how to solve problems"],
+                        ["Adventure and discovery", "Love and family", "Learning and growth", "Helping others"],
+                        ["Each event leads to the next", "They all teach the same lesson", "They show character development", "They build excitement"]
+                    ]
+                }
+            };
+
+            const template = templates[type];
+            const questionIndex = Math.floor(Math.random() * template.questions.length);
+            const question = template.questions[questionIndex];
+            const options = template.options[questionIndex];
+            const correctAnswer = Math.floor(Math.random() * 4);
+
+            return {
+                question: question.replace('[WORD]', getRandomWord()),
+                options: options,
+                answer: correctAnswer,
+                explanation: `This is a ${type} question that helps students understand the story better. The correct answer helps develop reading comprehension skills.`,
+                type: type,
+                difficulty: bookData.difficulty,
+                questionNumber: questionNum
+            };
+        }
+
+        function getRandomWord() {
+            const words = ['adventure', 'journey', 'discovery', 'friendship', 'courage', 'magical', 'wonderful', 'exciting'];
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        function getRandomEmoji(template) {
+            const emojis = {
+                story: ['📚', '📖', '📝', '✨', '🌟'],
+                educational: ['🧠', '🎓', '📊', '💡', '🔍'],
+                conversation: ['💬', '🗣️', '👥', '🤝', '💭'],
+                science: ['🔬', '⚗️', '🧪', '🌍', '🔭']
+            };
+            const emojiList = emojis[template] || emojis.story;
+            return emojiList[Math.floor(Math.random() * emojiList.length)];
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3', '#54A0FF', '#5F27CD'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function showProgress() {
+            document.getElementById('progress-bar').style.display = 'block';
+            document.querySelector('button[type="submit"]').disabled = true;
+        }
+
+        function updateProgress(percent, message) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            console.log(`진행률: ${percent}% - ${message}`);
+        }
+
+        function hideProgress() {
+            document.getElementById('progress-bar').style.display = 'none';
+            document.querySelector('button[type="submit"]').disabled = false;
+        }
+
+        function showResults() {
+            hideProgress();
+            
+            const resultsHtml = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">${generatedBook.book.cover}</div>
+                    <h3>${generatedBook.book.title}</h3>
+                    <p>by ${generatedBook.book.author}</p>
+                    <div style="margin: 15px 0;">
+                        <span style="background: #e3f2fd; padding: 5px 10px; border-radius: 15px; margin: 0 5px;">
+                            ${generatedBook.book.level}
+                        </span>
+                        <span style="background: #f3e5f5; padding: 5px 10px; border-radius: 15px; margin: 0 5px;">
+                            ${generatedBook.book.words} 단어
+                        </span>
+                        <span style="background: #e8f5e8; padding: 5px 10px; border-radius: 15px; margin: 0 5px;">
+                            ${generatedBook.questions.metadata.totalQuestions} 문제
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>📊 생성된 콘텐츠 정보:</h4>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li><strong>책 ID:</strong> ${generatedBook.book.id}</li>
+                        <li><strong>템플릿:</strong> ${generatedBook.book.template}</li>
+                        <li><strong>문제 유형:</strong> ${generatedBook.bookData.questionTypes.join(', ')}</li>
+                        <li><strong>난이도:</strong> ${generatedBook.bookData.difficulty}</li>
+                        <li><strong>생성 시간:</strong> ${new Date().toLocaleString()}</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                    <h4>✅ Sue Reading Academy에 바로 추가 가능!</h4>
+                    <p>생성된 책과 AI 문제를 어학원 시스템에 즉시 추가할 수 있습니다.</p>
+                </div>
+            `;
+            
+            document.getElementById('generation-results').innerHTML = resultsHtml;
+            document.getElementById('result-section').style.display = 'block';
+            
+            // 결과 섹션으로 스크롤
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadBook() {
+            const bookJson = JSON.stringify(generatedBook.book, null, 2);
+            const questionsJson = JSON.stringify(generatedBook.questions, null, 2);
+            
+            // 책 데이터 다운로드
+            downloadFile(`${generatedBook.book.id}.json`, bookJson);
+            
+            // 문제 데이터 다운로드
+            downloadFile(`${generatedBook.book.id}_questions.json`, questionsJson);
+            
+            alert('📥 파일 다운로드 완료!\n\n' +
+                  `✅ ${generatedBook.book.id}.json (책 데이터)\n` +
+                  `✅ ${generatedBook.book.id}_questions.json (AI 문제)`);
+        }
+
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function addToLibrary() {
+            // Sue Reading Academy 시스템에 직접 추가
+            try {
+                // 현재 데이터에 새 책 추가
+                if (typeof window.SUREADING_DATA !== 'undefined') {
+                    // 레벨별 책 목록에 추가
+                    const level = generatedBook.book.level;
+                    if (!window.SUREADING_DATA.books[level]) {
+                        window.SUREADING_DATA.books[level] = [];
+                    }
+                    window.SUREADING_DATA.books[level].push(generatedBook.book);
+                    
+                    // 문제 데이터 추가
+                    window.SUREADING_DATA.questions[generatedBook.book.id] = generatedBook.questions;
+                    
+                    // 메타데이터 업데이트
+                    window.SUREADING_DATA.metadata.totalBooks += 1;
+                    window.SUREADING_DATA.metadata.totalQuestions += 1;
+                    
+                    alert('📚 Sue Reading Academy에 성공적으로 추가되었습니다!\n\n' +
+                          `✅ 책: ${generatedBook.book.title}\n` +
+                          `✅ 문제: ${generatedBook.questions.metadata.totalQuestions}개\n\n` +
+                          '이제 도서 목록에서 바로 사용할 수 있습니다!');
+                    
+                    console.log('📚 새 책이 시스템에 추가됨:', generatedBook.book.id);
+                } else {
+                    throw new Error('시스템 데이터를 찾을 수 없습니다.');
+                }
+            } catch (error) {
+                console.error('도서관 추가 오류:', error);
+                alert('❌ 도서관 추가 중 오류가 발생했습니다.\n파일 다운로드를 이용해주세요.');
+            }
+        }
+
+        function createNewBook() {
+            if (confirm('🔄 새로운 책을 만드시겠습니까?\n(현재 작업 내용이 초기화됩니다)')) {
+                location.reload();
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // 페이지 로드 시 사용자 인증 확인
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!userManager.isLoggedIn()) {
+                alert('⚠️ 로그인이 필요합니다.');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
