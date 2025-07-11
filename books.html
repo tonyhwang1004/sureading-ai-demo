@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 도서 탐색 - SureReading AI</title>
+    <title>📖 도서 탐색 - Sue Reading Academy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -160,7 +160,7 @@
                                 </div>
                                 
                                 <div class="book-actions">
-                                    <button class="btn btn-primary" onclick="startReading('${book.id}')">
+                                    <button class="btn btn-primary" onclick="startBookQuiz('${book.id}')">
                                         📖 학습 시작
                                     </button>
                                     <button class="btn btn-success" onclick="viewQuestions('${book.id}')">
@@ -187,7 +187,7 @@
             displayBooks();
         }
 
-        function startReading(bookId) {
+        function startBookQuiz(bookId) {
             alert(`📖 "${bookId}" 학습을 시작합니다!\n\n🤖 AI가 생성한 맞춤형 문제와 함께 학습하세요!`);
         }
 
@@ -211,3 +211,51 @@
     </script>
 </body>
 </html>
+
+<script>
+// 기존 스크립트에 추가
+function startBookQuiz(bookId) {
+    if (!userManager.isLoggedIn()) {
+        alert('⚠️ 로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // 진도 확인
+    const progress = userManager.getBookProgress(bookId);
+    const completedQuestions = progress ? progress.completed : 0;
+    
+    const confirmMessage = completedQuestions > 0 ? 
+        `📖 "${bookId}" 학습을 계속하시겠습니까?\n\n이전 완료: ${completedQuestions}문제\n🎯 새로운 AI 문제로 학습합니다!` :
+        `📖 "${bookId}" 학습을 시작하시겠습니까?\n\n🤖 AI가 생성한 맞춤형 문제와 함께 학습하세요!`;
+    
+    if (confirm(confirmMessage)) {
+        window.location.href = `quiz.html?book=${bookId}`;
+    }
+}
+
+function viewBookQuestions(bookId) {
+    const questions = window.SUREADING_DATA.questions[bookId];
+    if (questions) {
+        let totalQuestions = 0;
+        Object.values(questions.chapters).forEach(chapter => {
+            totalQuestions += chapter.questions ? chapter.questions.length : 0;
+        });
+        
+        const progress = userManager.getBookProgress(bookId);
+        const completedQuestions = progress ? progress.completed : 0;
+        
+        alert(`🤖 "${bookId}" AI 문제 정보\n\n` +
+              `📊 총 ${Object.keys(questions.chapters).length}개 챕터\n` +
+              `❓ 총 ${totalQuestions}개 AI 문제\n` +
+              `✅ 완료: ${completedQuestions}개\n` +
+              `🎯 AI가 자동 생성한 고품질 문제들\n\n` +
+              `지금 바로 학습을 시작해보세요!`);
+    } else {
+        alert('이 책에는 아직 문제가 없습니다.');
+    }
+}
+</script>
+
+<!-- 사용자 관리 시스템 로드 -->
+<script src="static/js/user-manager.js"></script>

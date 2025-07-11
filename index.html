@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 SureReading AI - 영어 학습 플랫폼</title>
-    <meta name="description" content="AI 기반 영어 읽기 학습 플랫폼 - 93개의 AI 생성 문제로 완벽한 학습 경험">
+    <title>🏫 Sue Reading Academy - AI 영어 학습 어학원</title>
+    <meta name="description" content="Sue Reading Academy - AI 기반 영어 읽기 전문 어학원, 개인별 맞춤 학습">
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: white;
+            padding-top: 60px; /* 사용자 정보바 공간 */
         }
         
         .container {
@@ -30,8 +31,8 @@
             padding: 60px 0;
         }
         
-        h1 {
-            font-size: 3.5rem;
+        .academy-logo {
+            font-size: 4rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             background: linear-gradient(45deg, #fff, #e0e0e0);
@@ -40,13 +41,19 @@
             background-clip: text;
         }
         
+        .academy-name {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
         .subtitle {
             font-size: 1.3rem;
             opacity: 0.9;
             margin-bottom: 40px;
         }
         
-        .stats-banner {
+        .academy-info {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -153,7 +160,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .ai-badge {
+        .academy-badge {
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             padding: 8px 16px;
             border-radius: 20px;
@@ -164,7 +171,7 @@
         }
 
         @media (max-width: 768px) {
-            h1 {
+            .academy-name {
                 font-size: 2.5rem;
             }
             
@@ -187,16 +194,17 @@
 <body>
     <div class="container">
         <header>
-            <h1>🚀 SureReading AI</h1>
+            <div class="academy-logo">🏫</div>
+            <h1 class="academy-name">Sue Reading Academy</h1>
             <div class="subtitle">
-                AI 기반 영어 읽기 학습 플랫폼
-                <span class="ai-badge">🤖 AI 생성 문제</span>
-                <span class="ai-badge">📱 실시간 학습</span>
+                AI 기반 영어 읽기 전문 어학원
+                <span class="academy-badge">🤖 AI 맞춤 학습</span>
+                <span class="academy-badge">📚 개인별 진도관리</span>
             </div>
         </header>
 
-        <div class="stats-banner" id="system-stats">
-            <h2>📊 실시간 시스템 현황</h2>
+        <div class="academy-info" id="system-stats">
+            <h2>📊 Sue Reading Academy 학습 현황</h2>
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number" id="total-books">-</div>
@@ -204,15 +212,15 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" id="total-questions">-</div>
-                    <div>학습 문제</div>
+                    <div>AI 문제</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" id="ai-questions">93</div>
-                    <div>AI 생성 문제</div>
+                    <div class="stat-number" id="active-students">∞</div>
+                    <div>학습 가능</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">100%</div>
-                    <div>품질 검증</div>
+                    <div>AI 품질보장</div>
                 </div>
             </div>
         </div>
@@ -220,77 +228,78 @@
         <div class="features">
             <div class="feature-card">
                 <div class="feature-icon">🤖</div>
-                <h3>AI 문제 자동 생성</h3>
-                <p>최신 AI 기술로 각 도서별 맞춤형 읽기 이해 문제를 자동 생성합니다. 레벨별, 유형별로 최적화된 93개의 고품질 문제를 제공합니다.</p>
+                <h3>AI 맞춤형 문제 생성</h3>
+                <p>각 학생의 수준에 맞는 AI 문제를 실시간으로 생성합니다. 개인별 약점을 분석하여 최적화된 학습 경험을 제공합니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>실시간 진도 관리</h3>
+                <p>학생 개인별 학습 진도가 자동으로 저장되며, 선생님이 실시간으로 확인할 수 있습니다. 체계적인 학습 관리가 가능합니다.</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">📚</div>
                 <h3>체계적인 레벨 시스템</h3>
-                <p>Level 1부터 5까지 단계별 학습이 가능합니다. 각 레벨은 학습자의 실력에 맞는 어휘와 문제 유형으로 구성되어 있습니다.</p>
+                <p>Level 1부터 5까지 단계별 영어 도서로 구성되어 있습니다. 학생의 실력에 맞는 적절한 난이도로 학습할 수 있습니다.</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">🎯</div>
-                <h3>맞춤형 문제 유형</h3>
-                <p>어휘 이해, 사실 이해, 추론 이해, 비판적 사고, 종합 이해 등 5가지 문제 유형으로 완전한 읽기 능력을 기릅니다.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>완전 반응형 디자인</h3>
-                <p>PC, 태블릿, 스마트폰 등 모든 기기에서 최적화된 학습 환경을 제공합니다. 언제 어디서나 편리하게 학습할 수 있습니다.</p>
+                <h3>5가지 문제 유형</h3>
+                <p>어휘 이해, 사실 이해, 추론 이해, 비판적 사고, 종합 이해 등 완전한 읽기 능력을 기르는 문제 유형을 제공합니다.</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
-                <h3>실시간 즉시 피드백</h3>
-                <p>문제 풀이 즉시 정답과 상세한 해설을 확인할 수 있습니다. AI가 생성한 정확하고 이해하기 쉬운 설명을 제공합니다.</p>
+                <h3>즉시 피드백</h3>
+                <p>문제 풀이 후 즉시 정답과 상세한 해설을 확인할 수 있습니다. AI가 생성한 정확하고 이해하기 쉬운 설명을 제공합니다.</p>
             </div>
             
             <div class="feature-card">
-                <div class="feature-icon">🌐</div>
-                <h3>무료 온라인 접속</h3>
-                <p>별도의 설치나 가입 없이 바로 이용할 수 있습니다. GitHub Pages를 통해 안정적이고 빠른 서비스를 제공합니다.</p>
+                <div class="feature-icon">👨‍🏫</div>
+                <h3>선생님 관리 시스템</h3>
+                <p>선생님은 모든 학생의 진도와 성취도를 한눈에 확인할 수 있습니다. 개별 지도가 필요한 학생을 쉽게 파악할 수 있습니다.</p>
             </div>
         </div>
 
         <div class="navigation">
-            <a href="admin-books-detail.html" class="nav-button admin-button">🔧 관리자 대시보드</a>
-            <a href="books.html" class="nav-button">📖 도서 탐색</a>
+            <a href="books.html" class="nav-button">📖 영어 도서 학습</a>
             <a href="level-test.html" class="nav-button test-button">📝 레벨 테스트</a>
-            <a href="generator.html" class="nav-button ai-button">🤖 AI 문제 생성기</a>
+            <a href="admin-books-detail.html" class="nav-button admin-button">👨‍🏫 선생님 관리</a>
+            <a href="generator.html" class="nav-button ai-button">🤖 AI 문제 생성</a>
         </div>
 
         <footer>
-            <h3>🚀 SureReading AI v1.0</h3>
+            <h3>🏫 Sue Reading Academy v1.0</h3>
             <p>
-                📦 AI 생성 문제 93개 | 🌐 GitHub Pages 배포 | 📱 모바일 최적화<br>
-                🤖 머신러닝 기반 | 🔍 100% 품질 검증 | ⚡ 실시간 학습
+                📚 AI 생성 문제 99개 | 🎯 개인별 맞춤 학습 | 📊 실시간 진도 관리<br>
+                🤖 인공지능 기반 | 👨‍🏫 선생님 관리 시스템 | ⚡ 즉시 피드백
             </p>
             <div style="margin-top: 20px; opacity: 0.8;">
-                <p>Built with ❤️ using AI Technology</p>
+                <p>Built with ❤️ by Sue Reading Academy</p>
             </div>
         </footer>
     </div>
 
-    <!-- SureReading AI 번들 로드 -->
+    <!-- Sue Reading Academy 번들 로드 -->
     <script src="static/js/books-bundle.js"></script>
+    <script src="static/js/user-manager.js"></script>
     
     <script>
         // 페이지 로드 후 실시간 통계 업데이트
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 SureReading AI 로딩 시작...');
+            console.log('🏫 Sue Reading Academy 로딩 시작...');
             
             if (typeof window.SUREADING_DATA !== 'undefined') {
-                updateRealTimeStats();
-                console.log('✅ AI 번들 데이터 로딩 성공!');
+                updateAcademyStats();
+                console.log('✅ Sue Reading Academy 데이터 로딩 성공!');
                 showLoadingSuccess();
             } else {
-                console.log('⏳ AI 번들 로딩 대기 중...');
+                console.log('⏳ Sue Reading Academy 데이터 로딩 대기 중...');
                 setTimeout(() => {
                     if (typeof window.SUREADING_DATA !== 'undefined') {
-                        updateRealTimeStats();
+                        updateAcademyStats();
                         showLoadingSuccess();
                     } else {
                         showLoadingError();
@@ -299,11 +308,10 @@
             }
         });
 
-        function updateRealTimeStats() {
+        function updateAcademyStats() {
             const data = window.SUREADING_DATA;
             if (data && data.metadata) {
                 document.getElementById('total-books').textContent = data.metadata.totalBooks || 0;
-                document.getElementById('total-questions').textContent = data.metadata.totalQuestions || 0;
                 
                 // AI 생성 문제 수 정확히 계산
                 let aiQuestions = 0;
@@ -317,15 +325,13 @@
                     }
                 });
                 
-                document.getElementById('ai-questions').textContent = aiQuestions;
+                document.getElementById('total-questions').textContent = aiQuestions;
                 
-                // 성공 메시지
-                console.log(`📊 실시간 통계 업데이트: ${data.metadata.totalBooks}권, ${data.metadata.totalQuestions}세트, ${aiQuestions}개 AI 문제`);
+                console.log(`📊 Sue Reading Academy 통계: ${data.metadata.totalBooks}권, ${aiQuestions}개 AI 문제`);
             }
         }
 
         function showLoadingSuccess() {
-            // 성공 효과
             document.body.style.animation = 'none';
             setTimeout(() => {
                 document.body.style.animation = 'fadeIn 0.5s ease-in-out';
@@ -333,10 +339,9 @@
         }
 
         function showLoadingError() {
-            console.error('❌ AI 번들 로딩 실패');
+            console.error('❌ Sue Reading Academy 데이터 로딩 실패');
             document.getElementById('total-books').textContent = '?';
             document.getElementById('total-questions').textContent = '?';
-            document.getElementById('ai-questions').textContent = '?';
         }
 
         // CSS 애니메이션 추가

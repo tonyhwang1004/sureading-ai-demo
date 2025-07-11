@@ -3,270 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 - 수리딩어학원</title>
+    <title>🏫 SureReading 어학원 - 로그인</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
-
+        
         .login-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
             border-radius: 20px;
             padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
         }
-
-        .logo {
+        
+        .academy-logo {
             text-align: center;
             margin-bottom: 30px;
         }
-
-        .logo h1 {
+        
+        .academy-logo h1 {
+            color: #667eea;
             font-size: 2rem;
-            background: linear-gradient(45deg, #fff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
-
-        .logo p {
-            opacity: 0.8;
-            font-size: 0.9rem;
+        
+        .academy-logo p {
+            color: #666;
+            font-size: 1rem;
         }
-
-        .admin-indicator {
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
+        
         .form-group {
             margin-bottom: 20px;
         }
-
-        .form-group label {
+        
+        label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            opacity: 0.9;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
         }
-
-        .form-group input {
+        
+        input[type="email"], input[type="password"], input[type="text"] {
             width: 100%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            color: #fff;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease;
         }
-
-        .form-group input:focus {
+        
+        input:focus {
+            border-color: #667eea;
             outline: none;
-            border-color: #00ff88;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
         }
-
-        .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .login-btn {
+        
+        .btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #00ff88, #0088ff);
+            padding: 12px;
             border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
-        }
-
-        .error-message {
-            background: rgba(255, 107, 107, 0.2);
-            border: 1px solid #ff6b6b;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        .demo-info {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid #00ff88;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-
-        .demo-info.admin {
-            background: rgba(255, 107, 107, 0.1);
-            border-color: #ff6b6b;
-        }
-
-        .demo-info h4 {
-            color: #00ff88;
-            margin-bottom: 8px;
-        }
-
-        .demo-info.admin h4 {
-            color: #ff6b6b;
-        }
-
-        .demo-info p {
-            margin-bottom: 5px;
-            opacity: 0.9;
-        }
-
-        .account-section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 10px;
             margin-bottom: 10px;
         }
-
-        .account-section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
         }
-
-        .back-link {
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .divider {
             text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        
+        .student-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
             margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
         }
-
-        .back-link a {
-            color: #00ff88;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        
+        .error-message, .success-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
         }
-
-        .back-link a:hover {
-            color: #fff;
-            text-shadow: 0 0 10px #00ff88;
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
         }
-
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 20px;
-            }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .signup-form {
+            display: none;
         }
     </style>
-    <!-- SureReading 새 시스템 번들 -->
-    <script src="static/js/books-bundle.js"></script>
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">
-            <h1>🎓 수리딩어학원</h1>
-            <p>{% if admin_required %}관리자 로그인{% else %}학습현황 로그인{% endif %}</p>
+        <div class="academy-logo">
+            <h1>🏫 SureReading 어학원</h1>
+            <p>AI 기반 영어 학습 시스템</p>
         </div>
-
-        {% if admin_required %}
-        <div class="admin-indicator">
-            🔐 관리자 권한이 필요합니다
-        </div>
-        {% endif %}
-
-        {% if error %}
-        <div class="error-message">
-            {{ error }}
-        </div>
-        {% endif %}
-
-        <form method="POST">
+        
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        
+        <!-- 로그인 폼 -->
+        <form id="login-form" class="login-form">
             <div class="form-group">
-                <label for="username">아이디</label>
-                <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required>
+                <label for="email">이메일 주소</label>
+                <input type="email" id="email" required placeholder="student@academy.com">
             </div>
-
+            
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+                <input type="password" id="password" required placeholder="비밀번호를 입력하세요">
             </div>
-
-            <button type="submit" class="login-btn">로그인</button>
+            
+            <button type="submit" class="btn btn-primary">🔐 로그인</button>
         </form>
-
-        <div class="demo-info {% if admin_required %}admin{% endif %}">
-            {% if admin_required %}
-            <h4>🔑 관리자 계정</h4>
-            <div class="account-section">
-                <p><strong>아이디:</strong> sue</p>
-                <p><strong>비밀번호:</strong> sueadmin2024</p>
-                <p><strong>관리자:</strong> 수 원장님</p>
+        
+        <!-- 회원가입 폼 -->
+        <form id="signup-form" class="signup-form">
+            <div class="form-group">
+                <label for="signup-name">이름</label>
+                <input type="text" id="signup-name" required placeholder="김영어">
             </div>
-            <div class="account-section">
-                <p><strong>아이디:</strong> tony</p>
-                <p><strong>비밀번호:</strong> tonyadmin2024</p>
-                <p><strong>관리자:</strong> 토니 부원장님</p>
+            
+            <div class="form-group">
+                <label for="signup-email">이메일 주소</label>
+                <input type="email" id="signup-email" required placeholder="student@academy.com">
             </div>
-            {% else %}
-            <h4>🔍 체험 계정</h4>
-            <div class="account-section">
-                <p><strong>아이디:</strong> demo</p>
-                <p><strong>비밀번호:</strong> demo</p>
-                <p><strong>학생:</strong> 체험 학생 (Level 3)</p>
+            
+            <div class="form-group">
+                <label for="signup-password">비밀번호</label>
+                <input type="password" id="signup-password" required placeholder="최소 6자 이상">
             </div>
-            <div class="account-section">
-                <p><strong>일반 학생 계정들:</strong></p>
-                <p>student1 / password123 (김영수, Level 2)</p>
-                <p>student2 / password456 (이미영, Level 3)</p>
-                <p>student3 / password789 (박준호, Level 1)</p>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="back-link">
-            <a href="http://www.suelibrary.store/">← 메인으로 돌아가기</a>
+            
+            <button type="submit" class="btn btn-primary">👤 계정 만들기</button>
+        </form>
+        
+        <div class="divider">또는</div>
+        
+        <button class="btn btn-secondary" id="toggle-form" onclick="toggleForm()">
+            <span id="toggle-text">👤 새 계정 만들기</span>
+        </button>
+        
+        <div class="student-info">
+            <strong>📚 어학원 학생 안내:</strong><br>
+            • 개인별 학습 진도 자동 저장<br>
+            • AI 문제 무제한 이용<br>
+            • 선생님이 진도 확인 가능<br>
+            • 모든 기기에서 동기화
         </div>
     </div>
 
     <script>
-        // 페이지 로드 애니메이션
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.querySelector('.login-container');
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(30px)';
+        let isSignupMode = false;
+        
+        // 로그인 폼 처리
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            setTimeout(() => {
-                container.style.transition = 'all 0.6s ease';
-                container.style.opacity = '1';
-                container.style.transform = 'translateY(0)';
-            }, 100);
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                showMessage('로그인 중...', 'success');
+                
+                // 임시 로그인 처리 (추후 Firebase로 교체)
+                if (email && password.length >= 4) {
+                    const user = {
+                        email: email,
+                        name: email.split('@')[0],
+                        loginTime: new Date().toISOString(),
+                        isLoggedIn: true,
+                        role: email.includes('teacher') ? 'teacher' : 'student'
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    showMessage('로그인 성공! 메인 페이지로 이동합니다...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    throw new Error('이메일과 비밀번호(4자 이상)를 입력해주세요.');
+                }
+                
+            } catch (error) {
+                showMessage('로그인 실패: ' + error.message, 'error');
+            }
         });
+        
+        // 회원가입 폼 처리
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            
+            try {
+                showMessage('계정 생성 중...', 'success');
+                
+                if (name && email && password.length >= 6) {
+                    const user = {
+                        email: email,
+                        name: name,
+                        loginTime: new Date().toISOString(),
+                        isLoggedIn: true,
+                        isNewUser: true,
+                        role: email.includes('teacher') ? 'teacher' : 'student'
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    showMessage(`환영합니다 ${name}님! 계정이 생성되었습니다.`, 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    throw new Error('모든 정보를 올바르게 입력해주세요.');
+                }
+                
+            } catch (error) {
+                showMessage('계정 생성 실패: ' + error.message, 'error');
+            }
+        });
+        
+        // 폼 전환
+        function toggleForm() {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const toggleText = document.getElementById('toggle-text');
+            
+            isSignupMode = !isSignupMode;
+            
+            if (isSignupMode) {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                toggleText.textContent = '🔐 로그인으로 돌아가기';
+            } else {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                toggleText.textContent = '👤 새 계정 만들기';
+            }
+        }
+        
+        function showMessage(message, type) {
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            
+            // 모든 메시지 숨기기
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            if (type === 'error') {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            } else {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+        }
+        
+        // 이미 로그인된 경우 리다이렉트
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (currentUser.isLoggedIn) {
+            window.location.href = 'index.html';
+        }
+        
+        // 데모 계정 정보 표시
+        setTimeout(() => {
+            showMessage('💡 데모: 아무 이메일이나 입력하면 체험 가능합니다', 'success');
+        }, 2000);
     </script>
 </body>
 </html>

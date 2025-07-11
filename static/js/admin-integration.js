@@ -1,5 +1,5 @@
-// SureReading AI - 관리자 통합 스크립트
-console.log('🔧 SureReading AI 관리자 시스템 로딩...');
+// Sue Reading Academy - 관리자 통합 스크립트
+console.log('🔧 Sue Reading Academy 관리자 시스템 로딩...');
 
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.SUREADING_DATA !== 'undefined') {
@@ -51,7 +51,7 @@ function displayAISystemStats() {
             margin: 20px 0;
             box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
         ">
-            <h3>🤖 SureReading AI 시스템 현황</h3>
+            <h3>🤖 Sue Reading Academy 시스템 현황</h3>
             <div style="
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

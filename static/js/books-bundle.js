@@ -1,4 +1,4 @@
-// SureReading 데이터 번들 - bash로 생성됨
+// Sue Reading Academy 데이터 번들 - bash로 생성됨
 // 생성일시: Fri Jul 11 01:55:38 UTC 2025
 window.SUREADING_DATA = {
   books: {
@@ -1518,6 +1518,6 @@ window.SUREADING_DATA.metadata.totalQuestions = Object.keys(window.SUREADING_DAT
 window.books = window.SUREADING_DATA.books;
 window.questions = window.SUREADING_DATA.questions;
 
-console.log('📚 SureReading 데이터 로딩 완료!');
+console.log('📚 Sue Reading Academy 데이터 로딩 완료!');
 console.log('📊 총 ' + window.SUREADING_DATA.metadata.totalBooks + '권, ' + 
            window.SUREADING_DATA.metadata.totalQuestions + '개 문제 세트');
