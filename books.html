@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 도서 탐색 - SureReading AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        .back-button {
+            position: absolute; top: 20px; left: 20px;
+            background: #6c757d; color: white;
+            padding: 10px 20px; border-radius: 8px;
+            text-decoration: none; font-weight: bold;
+        }
+        .level-filters {
+            display: flex; justify-content: center; gap: 10px;
+            margin: 20px 0; flex-wrap: wrap;
+        }
+        .level-button {
+            padding: 10px 20px; border: 2px solid #007bff;
+            background: white; color: #007bff; border-radius: 25px;
+            cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+        }
+        .level-button.active { background: #007bff; color: white; }
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .book-card {
+            background: white; border-radius: 15px; padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; position: relative;
+        }
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .ai-badge {
+            position: absolute; top: 15px; right: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white; padding: 5px 10px; border-radius: 12px;
+            font-size: 0.8rem; font-weight: bold;
+        }
+        .book-cover {
+            width: 80px; height: 80px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin: 0 auto 20px;
+        }
+        .book-title {
+            font-size: 1.2rem; font-weight: bold;
+            margin-bottom: 10px; text-align: center;
+        }
+        .book-actions {
+            display: flex; gap: 10px; margin-top: 20px;
+        }
+        .btn {
+            flex: 1; padding: 10px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← 메인으로</a>
+            <h1>📖 AI 영어 도서 컬렉션</h1>
+            <p>AI가 생성한 맞춤형 문제로 학습하는 영어 도서</p>
+        </header>
+
+        <div class="level-filters">
+            <button class="level-button active" onclick="filterLevel('all')">전체</button>
+            <button class="level-button" onclick="filterLevel('level1')">Level 1</button>
+            <button class="level-button" onclick="filterLevel('level2')">Level 2</button>
+            <button class="level-button" onclick="filterLevel('level3')">Level 3</button>
+            <button class="level-button" onclick="filterLevel('level4')">Level 4</button>
+            <button class="level-button" onclick="filterLevel('level5')">Level 5</button>
+        </div>
+
+        <div class="books-grid" id="books-container">
+            <!-- 책 목록은 JavaScript로 동적 생성 -->
+        </div>
+    </div>
+
+    <script src="static/js/books-bundle.js"></script>
+    
+    <script>
+        let currentFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.SUREADING_DATA !== 'undefined') {
+                displayBooks();
+            } else {
+                setTimeout(() => {
+                    if (typeof window.SUREADING_DATA !== 'undefined') {
+                        displayBooks();
+                    }
+                }, 1000);
+            }
+        });
+
+        function displayBooks() {
+            const container = document.getElementById('books-container');
+            let booksHtml = '';
+            
+            Object.entries(window.SUREADING_DATA.books).forEach(([level, books]) => {
+                if (currentFilter === 'all' || currentFilter === level) {
+                    books.forEach(book => {
+                        const hasQuestions = window.SUREADING_DATA.questions[book.id];
+                        const questionCount = hasQuestions ? 
+                            Object.values(hasQuestions.chapters)
+                                .reduce((total, chapter) => total + (chapter.questions ? chapter.questions.length : 0), 0) : 0;
+                        
+                        // AI 생성 문제가 있는지 확인
+                        const hasAIQuestions = questionCount > 5; // AI 생성은 보통 5개 이상
+                        
+                        booksHtml += `
+                            <div class="book-card" data-level="${level}">
+                                ${hasAIQuestions ? '<div class="ai-badge">🤖 AI 문제</div>' : ''}
+                                
+                                <div class="book-cover" style="background: ${book.coverColor};">
+                                    ${book.cover}
+                                </div>
+                                
+                                <div class="book-title">${book.title}</div>
+                                <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                                    by ${book.author}
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; font-size: 0.9rem;">
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 5px; text-align: center;">
+                                        <strong>${book.words.toLocaleString()}</strong><br>
+                                        <small>단어</small>
+                                    </div>
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 5px; text-align: center;">
+                                        <strong>${questionCount}</strong><br>
+                                        <small>문제</small>
+                                    </div>
+                                </div>
+                                
+                                <div style="font-size: 0.9rem; color: #666; line-height: 1.4; margin-bottom: 20px;">
+                                    ${book.summary.length > 100 ? book.summary.substring(0, 100) + '...' : book.summary}
+                                </div>
+                                
+                                <div class="book-actions">
+                                    <button class="btn btn-primary" onclick="startReading('${book.id}')">
+                                        📖 학습 시작
+                                    </button>
+                                    <button class="btn btn-success" onclick="viewQuestions('${book.id}')">
+                                        🤖 AI 문제
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            });
+            
+            container.innerHTML = booksHtml;
+        }
+
+        function filterLevel(level) {
+            currentFilter = level;
+            
+            document.querySelectorAll('.level-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayBooks();
+        }
+
+        function startReading(bookId) {
+            alert(`📖 "${bookId}" 학습을 시작합니다!\n\n🤖 AI가 생성한 맞춤형 문제와 함께 학습하세요!`);
+        }
+
+        function viewQuestions(bookId) {
+            const questions = window.SUREADING_DATA.questions[bookId];
+            if (questions) {
+                let totalQuestions = 0;
+                Object.values(questions.chapters).forEach(chapter => {
+                    totalQuestions += chapter.questions ? chapter.questions.length : 0;
+                });
+                
+                alert(`🤖 "${bookId}" AI 문제 정보\n\n` +
+                      `📊 총 ${Object.keys(questions.chapters).length}개 챕터\n` +
+                      `❓ 총 ${totalQuestions}개 문제\n` +
+                      `🎯 AI가 자동 생성한 고품질 문제들\n\n` +
+                      `곧 실제 문제 풀이 페이지로 이동할 예정입니다!`);
+            } else {
+                alert('이 책에는 아직 문제가 없습니다.');
+            }
+        }
+    </script>
+</body>
+</html>

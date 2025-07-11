@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SureReading AI - 영어 학습 플랫폼</title>
+    <meta name="description" content="AI 기반 영어 읽기 학습 플랫폼 - 93개의 AI 생성 문제로 완벽한 학습 경험">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .stats-banner {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            text-decoration: none;
+            padding: 18px 35px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .admin-button {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+        }
+        
+        .ai-button {
+            background: linear-gradient(45deg, #6f42c1, #e83e8c);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .ai-badge {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-button {
+                width: 80%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 SureReading AI</h1>
+            <div class="subtitle">
+                AI 기반 영어 읽기 학습 플랫폼
+                <span class="ai-badge">🤖 AI 생성 문제</span>
+                <span class="ai-badge">📱 실시간 학습</span>
+            </div>
+        </header>
+
+        <div class="stats-banner" id="system-stats">
+            <h2>📊 실시간 시스템 현황</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-books">-</div>
+                    <div>영어 도서</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-questions">-</div>
+                    <div>학습 문제</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="ai-questions">93</div>
+                    <div>AI 생성 문제</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div>품질 검증</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI 문제 자동 생성</h3>
+                <p>최신 AI 기술로 각 도서별 맞춤형 읽기 이해 문제를 자동 생성합니다. 레벨별, 유형별로 최적화된 93개의 고품질 문제를 제공합니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>체계적인 레벨 시스템</h3>
+                <p>Level 1부터 5까지 단계별 학습이 가능합니다. 각 레벨은 학습자의 실력에 맞는 어휘와 문제 유형으로 구성되어 있습니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>맞춤형 문제 유형</h3>
+                <p>어휘 이해, 사실 이해, 추론 이해, 비판적 사고, 종합 이해 등 5가지 문제 유형으로 완전한 읽기 능력을 기릅니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>완전 반응형 디자인</h3>
+                <p>PC, 태블릿, 스마트폰 등 모든 기기에서 최적화된 학습 환경을 제공합니다. 언제 어디서나 편리하게 학습할 수 있습니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>실시간 즉시 피드백</h3>
+                <p>문제 풀이 즉시 정답과 상세한 해설을 확인할 수 있습니다. AI가 생성한 정확하고 이해하기 쉬운 설명을 제공합니다.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>무료 온라인 접속</h3>
+                <p>별도의 설치나 가입 없이 바로 이용할 수 있습니다. GitHub Pages를 통해 안정적이고 빠른 서비스를 제공합니다.</p>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="admin.html" class="nav-button admin-button">🔧 관리자 대시보드</a>
+            <a href="books.html" class="nav-button">📖 도서 탐색</a>
+            <a href="level-test.html" class="nav-button test-button">📝 레벨 테스트</a>
+            <a href="generator.html" class="nav-button ai-button">🤖 AI 문제 생성기</a>
+        </div>
+
+        <footer>
+            <h3>🚀 SureReading AI v1.0</h3>
+            <p>
+                📦 AI 생성 문제 93개 | 🌐 GitHub Pages 배포 | 📱 모바일 최적화<br>
+                🤖 머신러닝 기반 | 🔍 100% 품질 검증 | ⚡ 실시간 학습
+            </p>
+            <div style="margin-top: 20px; opacity: 0.8;">
+                <p>Built with ❤️ using AI Technology</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SureReading AI 번들 로드 -->
+    <script src="static/js/books-bundle.js"></script>
+    
+    <script>
+        // 페이지 로드 후 실시간 통계 업데이트
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 SureReading AI 로딩 시작...');
+            
+            if (typeof window.SUREADING_DATA !== 'undefined') {
+                updateRealTimeStats();
+                console.log('✅ AI 번들 데이터 로딩 성공!');
+                showLoadingSuccess();
+            } else {
+                console.log('⏳ AI 번들 로딩 대기 중...');
+                setTimeout(() => {
+                    if (typeof window.SUREADING_DATA !== 'undefined') {
+                        updateRealTimeStats();
+                        showLoadingSuccess();
+                    } else {
+                        showLoadingError();
+                    }
+                }, 2000);
+            }
+        });
+
+        function updateRealTimeStats() {
+            const data = window.SUREADING_DATA;
+            if (data && data.metadata) {
+                document.getElementById('total-books').textContent = data.metadata.totalBooks || 0;
+                document.getElementById('total-questions').textContent = data.metadata.totalQuestions || 0;
+                
+                // AI 생성 문제 수 정확히 계산
+                let aiQuestions = 0;
+                Object.values(data.questions).forEach(questionSet => {
+                    if (questionSet && questionSet.chapters) {
+                        Object.values(questionSet.chapters).forEach(chapter => {
+                            if (chapter.questions) {
+                                aiQuestions += chapter.questions.length;
+                            }
+                        });
+                    }
+                });
+                
+                document.getElementById('ai-questions').textContent = aiQuestions;
+                
+                // 성공 메시지
+                console.log(`📊 실시간 통계 업데이트: ${data.metadata.totalBooks}권, ${data.metadata.totalQuestions}세트, ${aiQuestions}개 AI 문제`);
+            }
+        }
+
+        function showLoadingSuccess() {
+            // 성공 효과
+            document.body.style.animation = 'none';
+            setTimeout(() => {
+                document.body.style.animation = 'fadeIn 0.5s ease-in-out';
+            }, 100);
+        }
+
+        function showLoadingError() {
+            console.error('❌ AI 번들 로딩 실패');
+            document.getElementById('total-books').textContent = '?';
+            document.getElementById('total-questions').textContent = '?';
+            document.getElementById('ai-questions').textContent = '?';
+        }
+
+        // CSS 애니메이션 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .stat-item {
+                animation: fadeIn 0.6s ease-in-out;
+            }
+            
+            .feature-card {
+                animation: fadeIn 0.8s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
