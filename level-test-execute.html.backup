@@ -2307,3 +2307,49 @@ function findBookInfo(bookId) {
 
 console.log('🎯 Sue Reading Academy 레벨테스트 매핑 시스템 로드 완료');
 </script>
+
+<script>
+// 문제 수 수정 스크립트
+function fixQuestionCount() {
+    // 총 문제 수를 60으로 고정
+    const totalQuestions = 60;
+    
+    // 진행률 표시 수정
+    function updateProgressDisplay(currentIndex) {
+        const progressPercent = ((currentIndex + 1) / totalQuestions * 100).toFixed(1);
+        
+        // 모든 진행률 관련 요소 업데이트
+        const elements = {
+            'current-question': currentIndex + 1,
+            'remaining-count': totalQuestions - (currentIndex + 1),
+            'progress-percent': progressPercent + '%',
+            'progress-display': `${currentIndex + 1}/${totalQuestions} (${progressPercent}%)`
+        };
+        
+        Object.keys(elements).forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = elements[id];
+            }
+        });
+        
+        // 진행률 바 업데이트
+        const progressFill = document.getElementById('progress-fill');
+        if (progressFill) {
+            progressFill.style.width = `${(currentIndex + 1) / totalQuestions * 100}%`;
+        }
+    }
+    
+    // 초기 설정
+    updateProgressDisplay(0);
+    
+    console.log('✅ 문제 수 60개로 수정 완료');
+}
+
+// 페이지 로드 시 실행
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fixQuestionCount);
+} else {
+    fixQuestionCount();
+}
+</script>
