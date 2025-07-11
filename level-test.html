@@ -885,3 +885,44 @@
     </script>
 </body>
 </html>
+
+<script>
+// 도서 선택 시 레벨테스트 실행 페이지로 이동
+function selectBookForTest(bookId) {
+    console.log('📖 도서 선택됨:', bookId);
+    
+    // 확인 메시지
+    const bookInfo = {
+        'PP001': 'Peppa Pig (Level 1)',
+        'FT001': 'Frog and Toad Are Friends (Level 2)',
+        'HM001': 'Henry and Mudge (Level 2)',
+        'EP001': 'Elephant and Piggie (Level 2)',
+        'CA001': 'Charlotte\'s Web (Level 3)',
+        'LR001': 'Lord of the Rings (Level 5)'
+    };
+    
+    const selectedBook = bookInfo[bookId] || 'Unknown Book';
+    
+    if (confirm(`📚 "${selectedBook}" 레벨테스트를 시작하시겠습니까?\n\n🎯 해당 도서의 문제로 레벨테스트가 진행됩니다.`)) {
+        // 레벨테스트 실행 페이지로 이동 (올바른 매개변수와 함께)
+        window.location.href = `level-test-execute.html?book=${bookId}&test=true`;
+    }
+}
+
+// 페이지 로드 시 도서 선택 이벤트 바인딩
+document.addEventListener('DOMContentLoaded', function() {
+    // 모든 도서 카드에 클릭 이벤트 추가
+    const bookCards = document.querySelectorAll('.book-card, .book-item, [data-book-id]');
+    
+    bookCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const bookId = this.dataset.bookId || this.getAttribute('data-book-id');
+            if (bookId) {
+                selectBookForTest(bookId);
+            }
+        });
+    });
+    
+    console.log('✅ Sue Reading Academy 레벨테스트 도서 선택 시스템 준비 완료');
+});
+</script>
