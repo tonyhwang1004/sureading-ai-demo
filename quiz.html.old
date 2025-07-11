@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 AI 문제 풀이 - Sue Reading Academy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding-top: 60px;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        .quiz-header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .book-cover {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .progress-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .quiz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .option.correct {
+            border-color: #28a745;
+            background: #28a745;
+            color: white;
+        }
+        
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #dc3545;
+            color: white;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+            display: none;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        
+        .btn:hover { transform: translateY(-2px); }
+        
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="books.html" class="back-button">← 도서 목록</a>
+    
+    <div class="container">
+        <div class="quiz-header">
+            <div class="book-info" id="book-info">
+                <!-- 책 정보는 JavaScript로 로드 -->
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div id="progress-text">문제 준비 중...</div>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="quiz-card" style="display: none;">
+            <div class="question" id="question-text"></div>
+            
+            <div class="options" id="options-container">
+                <!-- 선택지들은 JavaScript로 생성 -->
+            </div>
+            
+            <div class="explanation" id="explanation">
+                <!-- 해설은 정답 후 표시 -->
+            </div>
+            
+            <div class="controls">
+                <div id="question-info">문제 1 / 10</div>
+                
+                <div>
+                    <button class="btn btn-secondary" id="hint-btn" onclick="showHint()">💡 힌트</button>
+                    <button class="btn btn-primary" id="check-btn" onclick="checkAnswer()" disabled>정답 확인</button>
+                    <button class="btn btn-success" id="next-btn" onclick="nextQuestion()" style="display: none;">다음 문제</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-card" id="result-card">
+            <h2>🎉 학습 완료!</h2>
+            <div class="score-display" id="final-score">95%</div>
+            <div id="final-results"></div>
+            
+            <div style="margin-top: 30px;">
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 다시 풀기</button>
+                <a href="books.html" class="btn btn-secondary" style="text-decoration: none; display: inline-block; margin-left: 10px;">📚 다른 책 선택</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스크립트 로드 -->
+    <script src="static/js/books-bundle.js"></script>
+    <script src="static/js/user-manager.js"></script>
+    
+    <script>
+        let currentBook = null;
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let selectedOption = null;
+        let startTime = new Date();
+
+        // URL에서 책 ID 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('book') || 'PP001';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📚 Sue Reading Academy 문제 풀이 시작:', bookId);
+            
+            // 사용자 인증 확인
+            if (!userManager.isLoggedIn()) {
+                alert('⚠️ 로그인이 필요합니다.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (typeof window.SUREADING_DATA !== 'undefined') {
+                loadQuiz(bookId);
+            } else {
+                setTimeout(() => {
+                    if (typeof window.SUREADING_DATA !== 'undefined') {
+                        loadQuiz(bookId);
+                    } else {
+                        document.getElementById('progress-text').innerHTML = '❌ 데이터 로딩 실패';
+                    }
+                }, 2000);
+            }
+        });
+
+        function loadQuiz(bookId) {
+            console.log('📖 퀴즈 로딩:', bookId);
+            
+            // 책 정보 찾기
+            const books = Object.values(window.SUREADING_DATA.books).flat();
+            currentBook = books.find(book => book.id === bookId);
+            
+            if (!currentBook) {
+                // 기본 책 정보 생성
+                currentBook = createDefaultBook(bookId);
+            }
+
+            // 문제 데이터 찾기
+            const questionsData = window.SUREADING_DATA.questions[bookId];
+            
+            if (questionsData && questionsData.chapters) {
+                // 모든 문제 수집
+                currentQuestions = [];
+                Object.values(questionsData.chapters).forEach(chapter => {
+                    if (chapter.questions) {
+                        currentQuestions.push(...chapter.questions);
+                    }
+                });
+            }
+            
+            // 문제가 없으면 기본 문제 생성
+            if (currentQuestions.length === 0) {
+                currentQuestions = createDefaultQuestions(bookId);
+            }
+
+            // 문제 섞기 (최대 10문제)
+            currentQuestions = shuffleArray(currentQuestions).slice(0, 10);
+            
+            console.log(`✅ ${currentQuestions.length}개 문제 로드 완료`);
+            
+            // 시작 시간 기록
+            startTime = new Date();
+            
+            // UI 초기화
+            displayBookInfo();
+            showQuestion();
+        }
+
+        function createDefaultBook(bookId) {
+            const bookInfoMap = {
+                'PP001': { id: 'PP001', title: 'Peppa Pig', author: 'Ladybird', cover: '🐷', coverColor: '#FF6B6B' },
+                'FT001': { id: 'FT001', title: 'Frog and Toad Are Friends', author: 'Arnold Lobel', cover: '🐸', coverColor: '#4ECDC4' },
+                'HM001': { id: 'HM001', title: 'Henry and Mudge', author: 'Cynthia Rylant', cover: '🐕', coverColor: '#45B7D1' },
+                'EP001': { id: 'EP001', title: 'Elephant and Piggie', author: 'Mo Willems', cover: '🐘', coverColor: '#96CEB4' },
+                'CA001': { id: 'CA001', title: 'Charlotte\'s Web', author: 'E.B. White', cover: '🕷️', coverColor: '#FECA57' },
+                'LR001': { id: 'LR001', title: 'Lord of the Rings', author: 'J.R.R. Tolkien', cover: '💍', coverColor: '#FF9FF3' }
+            };
+            
+            return bookInfoMap[bookId] || { id: bookId, title: 'Unknown Book', author: 'Sue Reading Academy', cover: '📚', coverColor: '#667eea' };
+        }
+
+        function createDefaultQuestions(bookId) {
+            const defaultQuestions = {
+                'PP001': [
+                    {
+                        question: "What is Peppa Pig's favorite activity?",
+                        options: ["Swimming", "Jumping in muddy puddles", "Reading books", "Playing football"],
+                        answer: 1,
+                        explanation: "Peppa Pig loves jumping in muddy puddles with her family.",
+                        type: "factual"
+                    },
+                    {
+                        question: "Who is Peppa's little brother?",
+                        options: ["Pedro", "George", "Suzy", "Rebecca"],
+                        answer: 1,
+                        explanation: "George is Peppa's little brother who loves dinosaurs.",
+                        type: "factual"
+                    }
+                ],
+                'FT001': [
+                    {
+                        question: "What is the main theme of 'Frog and Toad Are Friends'?",
+                        options: ["Adventure", "Friendship", "Magic", "School"],
+                        answer: 1,
+                        explanation: "The story focuses on the friendship between Frog and Toad.",
+                        type: "critical"
+                    }
+                ],
+                'HM001': [
+                    {
+                        question: "What is Henry's problem in the story?",
+                        options: ["He is lost", "He doesn't want to take a bath", "He is hungry", "He is tired"],
+                        answer: 1,
+                        explanation: "Henry doesn't want to take a bath and tries to avoid it.",
+                        type: "factual"
+                    }
+                ]
+            };
+            
+            const questions = defaultQuestions[bookId] || defaultQuestions['PP001'];
+            console.log('📝 기본 문제 사용:', questions.length + '개');
+            return questions;
+        }
+
+        function displayBookInfo() {
+            const progress = userManager.getBookProgress(currentBook.id);
+            const completedQuestions = progress ? progress.completed : 0;
+            
+            const bookInfoHtml = `
+                <div class="book-cover" style="background: ${currentBook.coverColor};">
+                    ${currentBook.cover}
+                </div>
+                <div>
+                    <h2>${currentBook.title}</h2>
+                    <p>by ${currentBook.author}</p>
+                    <span style="background: #e3f2fd; padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;">
+                        🏫 Sue Reading Academy
+                    </span>
+                    <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                        이전 완료: ${completedQuestions}문제
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('book-info').innerHTML = bookInfoHtml;
+        }
+
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            
+            // 진행률 업데이트
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').innerHTML = 
+                `문제 ${currentQuestionIndex + 1} / ${currentQuestions.length} (${Math.round(progress)}%)`;
+            
+            // 문제 표시
+            document.getElementById('question-text').innerHTML = question.question;
+            document.getElementById('question-info').innerHTML = 
+                `문제 ${currentQuestionIndex + 1} / ${currentQuestions.length}`;
+            
+            // 선택지 생성
+            const optionsHtml = question.options.map((option, index) => `
+                <div class="option" onclick="selectOption(${index})" data-index="${index}">
+                    ${String.fromCharCode(65 + index)}. ${option}
+                </div>
+            `).join('');
+            
+            document.getElementById('options-container').innerHTML = optionsHtml;
+            
+            // 상태 초기화
+            selectedOption = null;
+            document.getElementById('check-btn').disabled = true;
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+            
+            // 퀴즈 카드 표시
+            document.getElementById('quiz-card').style.display = 'block';
+        }
+
+        function selectOption(index) {
+            // 이전 선택 해제
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // 새 선택 적용
+            document.querySelector(`[data-index="${index}"]`).classList.add('selected');
+            selectedOption = index;
+            
+            // 정답 확인 버튼 활성화
+            document.getElementById('check-btn').disabled = false;
+        }
+
+        function checkAnswer() {
+            const question = currentQuestions[currentQuestionIndex];
+            const isCorrect = selectedOption === question.answer;
+            const score = isCorrect ? 100 : 0;
+            
+            // 사용자 답 저장
+            userAnswers.push({
+                question: question.question,
+                userAnswer: selectedOption,
+                correctAnswer: question.answer,
+                isCorrect: isCorrect,
+                score: score,
+                timeSpent: new Date() - startTime
+            });
+            
+            // 진도 저장 (Sue Reading Academy 시스템)
+            userManager.saveProgress(currentBook.id, currentQuestionIndex, score, isCorrect);
+            
+            // 결과 표시
+            document.querySelectorAll('.option').forEach((opt, index) => {
+                opt.onclick = null; // 클릭 비활성화
+                
+                if (index === question.answer) {
+                    opt.classList.add('correct');
+                } else if (index === selectedOption) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            // 해설 표시
+            document.getElementById('explanation').innerHTML = `
+                <strong>${isCorrect ? '✅ 정답!' : '❌ 오답'}</strong><br>
+                ${question.explanation}<br><br>
+                <small>💾 Sue Reading Academy에 진도가 자동 저장되었습니다.</small>
+            `;
+            document.getElementById('explanation').style.display = 'block';
+            
+            // 버튼 상태 변경
+            document.getElementById('check-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            startTime = new Date(); // 새 문제 시작 시간
+            
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showResults();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            const correctCount = userAnswers.filter(answer => answer.isCorrect).length;
+            const totalCount = userAnswers.length;
+            const percentage = Math.round((correctCount / totalCount) * 100);
+            
+            let grade = '';
+            let gradeColor = '';
+            if (percentage >= 90) { grade = '🏆 우수'; gradeColor = '#28a745'; }
+            else if (percentage >= 80) { grade = '🎉 양호'; gradeColor = '#20c997'; }
+            else if (percentage >= 70) { grade = '👍 보통'; gradeColor = '#ffc107'; }
+            else { grade = '📚 더 연습 필요'; gradeColor = '#dc3545'; }
+            
+            const resultsHtml = `
+                <div style="color: ${gradeColor}; margin-bottom: 20px;">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">${grade}</div>
+                </div>
+                <h3>${correctCount} / ${totalCount} 정답</h3>
+                <div style="margin: 20px 0; color: #666;">
+                    📚 ${currentBook.title}<br>
+                    👤 ${userManager.currentUser.name}<br>
+                    🏫 Sue Reading Academy
+                </div>
+                <p style="margin-top: 20px; color: #666;">
+                    학습 기록이 자동으로 저장되었습니다.
+                </p>
+            `;
+            
+            document.getElementById('final-score').innerHTML = `${percentage}%`;
+            document.getElementById('final-score').style.color = gradeColor;
+            document.getElementById('final-results').innerHTML = resultsHtml;
+            document.getElementById('quiz-card').style.display = 'none';
+            document.getElementById('result-card').style.display = 'block';
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            selectedOption = null;
+            
+            // 문제 다시 섞기
+            currentQuestions = shuffleArray(currentQuestions);
+            
+            document.getElementById('result-card').style.display = 'none';
+            showQuestion();
+        }
+
+        function showHint() {
+            const question = currentQuestions[currentQuestionIndex];
+            alert(`💡 힌트: 이 문제는 "${question.type}" 유형입니다.\n\n정답을 신중히 선택해보세요!`);
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        console.log('✅ Sue Reading Academy Quiz 시스템 로드 완료');
+    </script>
+</body>
+</html>

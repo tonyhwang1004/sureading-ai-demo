@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sue Reading Academy - URL 리다이렉트</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .redirect-info {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-info">
+        <h1>🏫 Sue Reading Academy</h1>
+        <div class="spinner"></div>
+        <p>고유 링크를 처리하고 있습니다...</p>
+        <div id="redirect-info"></div>
+    </div>
+
+    <script>
+        // URL 패턴 매칭 및 리다이렉트
+        const currentPath = window.location.pathname;
+        console.log('🔗 현재 경로:', currentPath);
+        
+        // /level-test/start/{level}/{book-slug} 패턴 감지
+        const levelTestMatch = currentPath.match(/\/level-test\/start\/(\d+)\/(.+)/);
+        
+        if (levelTestMatch) {
+            const level = levelTestMatch[1];
+            const bookSlug = levelTestMatch[2];
+            
+            // 슬러그를 책 ID로 변환
+            const slugToBookId = {
+                'peppa-pig': 'PP001',
+                'frog-toad': 'FT001', 
+                'henry-mudge': 'HM001',
+                'elephant-piggie': 'EP001',
+                'charlottes-web': 'CA001',
+                'lord-rings': 'LR001',
+                'junie-b': 'JB001'
+            };
+            
+            const bookId = slugToBookId[bookSlug];
+            
+            if (bookId) {
+                document.getElementById('redirect-info').innerHTML = `
+                    <strong>📚 ${bookSlug} (Level ${level})</strong><br>
+                    정식 페이지로 이동 중...
+                `;
+                
+                // 쿼리 파라미터에 test 여부 확인
+                const isTest = currentPath.includes('/level-test/');
+                
+                // 적절한 페이지로 리다이렉트
+                const targetUrl = isTest ? 
+                    `level-test-execute.html?book=${bookId}&slug=${bookSlug}&level=${level}&test=true` :
+                    `quiz.html?book=${bookId}&slug=${bookSlug}&level=${level}`;
+                
+                console.log('🎯 리다이렉트 대상:', targetUrl);
+                
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1500);
+            } else {
+                document.getElementById('redirect-info').innerHTML = `
+                    <strong>❌ 알 수 없는 책:</strong> ${bookSlug}<br>
+                    <a href="books.html" style="color: #667eea;">📚 도서 목록으로 이동</a>
+                `;
+            }
+        } else {
+            // 일반 404 처리
+            document.getElementById('redirect-info').innerHTML = `
+                <strong>🔍 페이지를 찾을 수 없습니다</strong><br>
+                <a href="index.html" style="color: #667eea;">🏠 홈으로 이동</a>
+            `;
+        }
+    </script>
+</body>
+</html>
