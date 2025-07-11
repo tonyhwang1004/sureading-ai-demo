@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수리딩어학원 관리자 시스템</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 30px;
+        }
+
+        .logo-section h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .logo-section p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 네비게이션 메뉴 */
+        .nav-menu {
+            list-style: none;
+            padding: 0 20px;
+        }
+
+        .nav-menu li {
+            margin-bottom: 8px;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-menu a.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-menu .icon {
+            font-size: 20px;
+            margin-right: 15px;
+            width: 24px;
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .time-display {
+            font-size: 16px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* 통계 카드 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 차트 섹션 */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* 빠른 액션 */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .action-btn span {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        /* 로딩 애니메이션 */
+        .loading {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+    <!-- SureReading 새 시스템 번들 -->
+    <script src="static/js/books-bundle.js"></script>
+    <script src="static/js/admin-integration.js"></script>
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo-section">
+            <h1>수리딩어학원</h1>
+            <p>관리자 시스템</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li>
+                <a href="#" class="active">
+                    <span class="icon">📊</span>
+                    대시보드
+                </a>
+            </li>
+            <li>
+                <a href="/admin/students">
+                    <span class="icon">👥</span>
+                    학생 관리
+                </a>
+            </li>
+            <li>
+                <a href="/admin/books">
+                    <span class="icon">📚</span>
+                    도서 관리
+                </a>
+            </li>
+            <li>
+                <a href="/admin/analytics">
+                    <span class="icon">📈</span>
+                    학습 분석
+                </a>
+            </li>
+            <li>
+                <a href="/">
+                    <span class="icon">🏠</span>
+                    홈페이지로
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 헤더 -->
+        <div class="header">
+            <h2>관리자 대시보드</h2>
+            <div class="header-info">
+                <div class="time-display" id="current-time">
+                    {{ admin_data.admin_name }}님 환영합니다
+                </div>
+            </div>
+        </div>
+
+        <!-- 통계 카드들 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">{{ admin_data.total_students }}</div>
+                <div class="stat-label">전체 학생</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👨‍💼</div>
+                <div class="stat-value">{{ admin_data.admin_count }}</div>
+                <div class="stat-label">관리자</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value">25</div>
+                <div class="stat-label">보유 도서</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">0</div>
+                <div class="stat-label">오늘 활동 학습</div>
+            </div>
+        </div>
+
+        <!-- 차트 섹션 -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>📊 최근 학습 활동</h3>
+                <div id="recent-activities">
+                    {% for activity in admin_data.recent_activities %}
+                    <div style="padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                        <div>
+                            <strong>{{ activity.student }}</strong><br>
+                            <span style="color: #666;">{{ activity.action }}</span>
+                        </div>
+                        <span style="color: #999;">{{ activity.time }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3>🏫 클래스별 학생 분포</h3>
+                <div class="class-chart">
+                    {% for student in admin_data.students %}
+                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <strong>{{ student.student_name }}</strong> (레벨 {{ student.level }})
+                        <span style="float: right; color: #666;">
+                            {% if student.is_admin %}관리자{% else %}학생{% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 빠른 액션 버튼들 -->
+        <div class="quick-actions">
+            <a href="/admin/students" class="action-btn">
+                <span>👤</span>
+                학생 관리
+            </a>
+            <a href="/admin/books" class="action-btn">
+                <span>📖</span>
+                도서 관리
+            </a>
+            <a href="/admin/analytics" class="action-btn">
+                <span>📈</span>
+                학습 분석
+            </a>
+            <a href="/" class="action-btn">
+                <span>🏠</span>
+                홈페이지로
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 실시간 시계
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('ko-KR');
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        // 페이지 로드 시 시간 업데이트
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>

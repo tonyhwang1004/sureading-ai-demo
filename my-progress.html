@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습현황 - 수리딩어학원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 60px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .book-progress {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .book-progress:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .book-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .book-meta {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            border-radius: 6px;
+            transition: width 0.8s ease;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            min-width: 50px;
+            margin-right: 15px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .weekly-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .back-btn, .logout-btn {
+                position: static;
+                display: block;
+                margin: 10px auto;
+                text-align: center;
+                width: fit-content;
+            }
+            
+            .header {
+                padding-top: 20px;
+            }
+            
+            .book-progress {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .progress-bar {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .book-info {
+                margin-right: 0;
+            }
+        }
+    </style>
+    <!-- SureReading 새 시스템 번들 -->
+    <script src="static/js/books-bundle.js"></script>
+</head>
+<body>
+    <a href="http://www.suelibrary.store/level-learning.html" class="back-btn">← 레벨학습으로</a>
+    <a href="/logout" class="logout-btn">로그아웃</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>{{ progress.student_name }}님의 학습현황</h1>
+            <p>현재 레벨: Level {{ progress.current_level }} 📚</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number">{{ progress.total_books_read }}</div>
+                <div class="stat-label">완독한 도서</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-number">{{ progress.total_study_time }}</div>
+                <div class="stat-label">총 학습시간</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number">{{ progress.weekly_stats.quiz_accuracy }}%</div>
+                <div class="stat-label">퀴즈 정답률</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">📖 현재 학습 중인 도서</h2>
+            {% for book in progress.recent_books %}
+            <div class="book-progress">
+                <div class="book-info">
+                    <div class="book-title">{{ book.title }}</div>
+                    <div class="book-meta">QR: {{ book.qr_code }}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ book.progress }}%;"></div>
+                </div>
+                <div class="progress-text">{{ book.progress }}%</div>
+                <a href="http://www.suelibrary.store/qr/{{ book.qr_code }}" class="continue-btn" target="_blank">
+                    {% if book.progress == 100 %}복습하기{% else %}이어서 읽기{% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">📊 이번 주 학습 통계</h2>
+            <div class="weekly-section">
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number">{{ progress.weekly_stats.books_completed }}</div>
+                    <div class="stat-label">완독한 도서</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-number">{{ progress.weekly_stats.study_hours }}</div>
+                    <div class="stat-label">이번 주 학습시간</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">🎯 다음 목표</h2>
+            <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;">
+                🌟 Level {{ progress.current_level + 1 }} 도전하기!<br>
+                📚 이번 달 목표: 5권 완독<br>
+                🏆 다음 레벨까지 {{ 15 - progress.total_books_read }}권 남음
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 페이지 로드 애니메이션
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.stat-card, .book-progress, .progress-section');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+
+            // 프로그레스 바 애니메이션
+            setTimeout(() => {
+                const progressBars = document.querySelectorAll('.progress-fill');
+                progressBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

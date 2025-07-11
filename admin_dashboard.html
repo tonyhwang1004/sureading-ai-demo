@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - 수리딩어학원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #fff, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .activity-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-student {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .activity-action {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .student-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .student-level {
+            color: #00ff88;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .student-id {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+    <!-- SureReading 새 시스템 번들 -->
+    <script src="static/js/books-bundle.js"></script>
+    <script src="static/js/admin-integration.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 관리자 대시보드</h1>
+            <a href="/logout" class="logout-btn">로그아웃</a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">{{ admin_data.total_students }}</div>
+                <div class="stat-label">등록 학생 수</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👑</div>
+                <div class="stat-number">{{ admin_data.admin_count }}</div>
+                <div class="stat-label">관리자 수</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">QR 도서 수</div>
+            </div>
+        </div>
+
+        <div class="activity-section">
+            <h2 class="section-title">📊 최근 활동</h2>
+            {% for activity in admin_data.recent_activities %}
+            <div class="activity-item">
+                <div class="activity-info">
+                    <div class="activity-student">{{ activity.student }}</div>
+                    <div class="activity-action">{{ activity.action }}</div>
+                </div>
+                <div class="activity-time">{{ activity.time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="activity-section">
+            <h2 class="section-title">👥 등록된 학생 목록</h2>
+            <div class="students-grid">
+                {% for student in admin_data.students %}
+                <div class="student-card">
+                    <div class="student-name">{{ student.student_name }}</div>
+                    <div class="student-level">Level {{ student.level }}</div>
+                    <div class="student-id">ID: {{ student.username }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="activity-section">
+            <h2 class="section-title">🛠️ 관리 기능</h2>
+            <p style="opacity: 0.8; line-height: 1.6;">
+                안녕하세요, {{ admin_data.admin_name }}님! 👋<br>
+                관리자 권한으로 로그인하셨습니다.<br><br>
+                
+                🎯 주요 관리 기능:<br>
+                • 학생 학습 현황 모니터링<br>
+                • QR 도서 관리 및 추가<br>
+                • 레벨 테스트 결과 분석<br>
+                • 학습 리포트 생성<br>
+                • 시스템 설정 관리
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 페이지 로드 애니메이션
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.stat-card, .activity-section, .student-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

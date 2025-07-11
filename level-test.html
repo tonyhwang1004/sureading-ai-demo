@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도서별 영어 레벨테스트 - 수리딩어학원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .test-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .info-description {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .level-selection {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .levels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .level-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: #667eea;
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+        }
+
+        .level-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+        }
+
+        .level-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+
+        .level-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .level-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .level-books {
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .book-selection {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .book-selection.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-3px);
+            border-color: #667eea;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        .book-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea05, #764ba205);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .book-cover {
+            width: 80px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            text-align: center;
+        }
+
+        .book-author {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .book-level {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #495057;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .book-description {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .test-details {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .test-details h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .test-details li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #856404;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .test-details li::before {
+            content: "📝";
+            position: absolute;
+            left: 0;
+        }
+
+        .student-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .start-section {
+            text-align: center;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            min-width: 200px;
+        }
+
+        .start-btn:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .selection-summary {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .summary-content {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .levels-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+    <!-- SureReading 모듈화 번들 -->
+    <script src="static/js/books-bundle.js"></script>
+</head>
+<body>
+    <a href="/" class="back-link">🏠 홈으로</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>📚 도서별 영어 레벨테스트</h1>
+            <p>레벨과 도서를 선택하여 맞춤형 comprehension 테스트를 받아보세요!</p>
+        </div>
+
+        <div class="test-info">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📖</div>
+                    <div class="info-title">테스트 방식</div>
+                    <div class="info-description">선택한 도서의<br>Comprehension 문제</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">❓</div>
+                    <div class="info-title">문제 수</div>
+                    <div class="info-description">총 60문제<br>(챕터 1-5 범위)</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <div class="info-title">합격 기준</div>
+                    <div class="info-description">평균 80점 이상<br>통과</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⏱️</div>
+                    <div class="info-title">소요 시간</div>
+                    <div class="info-description">약 90분<br>(시간 제한 있음)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="level-selection">
+            <h2 class="section-title">📊 레벨 선택</h2>
+            <p class="section-subtitle">먼저 테스트를 받고 싶은 레벨을 선택해주세요</p>
+            
+            <div class="levels-container" id="levels-container">
+                <div class="level-card" onclick="selectLevel(1)" data-level="1">
+                    <div class="level-number">1</div>
+                    <div class="level-name">초급 (Beginner)</div>
+                    <div class="level-description">기초 어휘와 간단한 문장 구조</div>
+                    <div class="level-books">Story Books (3권)</div>
+                </div>
+                <div class="level-card" onclick="selectLevel(2)" data-level="2">
+                    <div class="level-number">2</div>
+                    <div class="level-name">초중급 (Elementary)</div>
+                    <div class="level-description">기본 문법과 일상 표현</div>
+                    <div class="level-books">Picture Books (3권)</div>
+                </div>
+                <div class="level-card" onclick="selectLevel(3)" data-level="3">
+                    <div class="level-number">3</div>
+                    <div class="level-name">중급 (Intermediate)</div>
+                    <div class="level-description">복합 문장과 다양한 어휘</div>
+                    <div class="level-books">Chapter Books (3권)</div>
+                </div>
+                <div class="level-card" onclick="selectLevel(4)" data-level="4">
+                    <div class="level-number">4</div>
+                    <div class="level-name">중고급 (Upper-Intermediate)</div>
+                    <div class="level-description">복잡한 문법과 고급 어휘</div>
+                    <div class="level-books">Young Adult Fiction (3권)</div>
+                </div>
+                <div class="level-card" onclick="selectLevel(5)" data-level="5">
+                    <div class="level-number">5</div>
+                    <div class="level-name">고급 (Advanced)</div>
+                    <div class="level-description">원어민 수준의 표현력</div>
+                    <div class="level-books">Classic Literature (3권)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="book-selection" id="book-selection">
+            <h3 class="section-title" style="color: #333; font-size: 1.5rem; margin-bottom: 20px;">📖 도서 선택</h3>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">테스트를 받을 도서를 선택해주세요</p>
+            
+            <div class="books-grid" id="books-grid">
+                <!-- 도서들이 동적으로 생성됩니다 -->
+            </div>
+
+            <div class="test-details">
+                <h4>📋 테스트 상세 정보</h4>
+                <ul>
+                    <li>선택한 도서의 챕터 1-5 범위에서 출제</li>
+                    <li>총 60문제의 comprehension 문제</li>
+                    <li>다지선다형 및 단답형 문제</li>
+                    <li>평균 80점 이상 시 해당 레벨 통과</li>
+                    <li>시간 제한: 90분 (문제당 평균 1분 30초)</li>
+                    <li>한 번 제출 후 수정 불가</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="student-info">
+            <h3 style="text-align: center; margin-bottom: 25px; color: #333;">✍️ 학생 정보 입력</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="student-name">이름 *</label>
+                    <input type="text" id="student-name" class="form-control" 
+                           placeholder="홍길동" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-grade">학년</label>
+                    <select id="student-grade" class="form-control">
+                        <option value="">선택하세요</option>
+                        <option value="초1">초등 1학년</option>
+                        <option value="초2">초등 2학년</option>
+                        <option value="초3">초등 3학년</option>
+                        <option value="초4">초등 4학년</option>
+                        <option value="초5">초등 5학년</option>
+                        <option value="초6">초등 6학년</option>
+                        <option value="중1">중학 1학년</option>
+                        <option value="중2">중학 2학년</option>
+                        <option value="중3">중학 3학년</option>
+                        <option value="고1">고등 1학년</option>
+                        <option value="고2">고등 2학년</option>
+                        <option value="고3">고등 3학년</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="selection-summary" class="selection-summary" style="display: none;">
+                <div class="summary-title">📋 선택 사항 확인</div>
+                <div class="summary-content" id="summary-content"></div>
+            </div>
+
+            <div class="start-section">
+                <button class="start-btn" onclick="startTest()" id="start-button" disabled>
+                    🚀 레벨테스트 시작하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 레벨별 도서 데이터
+        const levelBooks = {
+            1: [
+                {
+                    id: 'cat-hat',
+                    title: 'The Cat in the Hat',
+                    author: 'Dr. Seuss',
+                    icon: '🐱',
+                    description: '모자를 쓴 고양이의 재미있는 모험 이야기'
+                },
+                {
+                    id: 'green-eggs',
+                    title: 'Green Eggs and Ham',
+                    author: 'Dr. Seuss',
+                    icon: '🥚',
+                    description: '초록 달걀과 햄에 대한 유쾌한 이야기'
+                },
+                {
+                    id: 'brown-bear',
+                    title: 'Brown Bear, Brown Bear',
+                    author: 'Bill Martin Jr.',
+                    icon: '🐻',
+                    description: '다양한 동물들을 만나는 반복 학습서'
+                }
+            ],
+            2: [
+                {
+                    id: 'frog-toad',
+                    title: 'Frog and Toad Are Friends',
+                    author: 'Arnold Lobel',
+                    icon: '🐸',
+                    description: '개구리와 두꺼비의 우정 이야기'
+                },
+                {
+                    id: 'henry-mudge',
+                    title: 'Henry and Mudge',
+                    author: 'Cynthia Rylant',
+                    icon: '🐕',
+                    description: '소년과 강아지의 따뜻한 우정'
+                },
+                {
+                    id: 'elephant-piggie',
+                    title: 'Elephant and Piggie',
+                    author: 'Mo Willems',
+                    icon: '🐘',
+                    description: '코끼리와 돼지의 즐거운 모험'
+                }
+            ],
+            3: [
+                {
+                    id: 'magic-tree',
+                    title: 'Magic Tree House',
+                    author: 'Mary Pope Osborne',
+                    icon: '🏠',
+                    description: '마법의 나무집에서 시작되는 시간여행'
+                },
+                {
+                    id: 'junie-b',
+                    title: 'Junie B. Jones',
+                    author: 'Barbara Park',
+                    icon: '👧',
+                    description: '유쾌한 소녀 주니 B의 학교생활'
+                },
+                {
+                    id: 'cam-jansen',
+                    title: 'Cam Jansen',
+                    author: 'David A. Adler',
+                    icon: '🔍',
+                    description: '사진기 같은 기억력을 가진 소녀 탐정'
+                }
+            ],
+            4: [
+                {
+                    id: 'holes',
+                    title: 'Holes',
+                    author: 'Louis Sachar',
+                    icon: '🕳️',
+                    description: '캠프 그린 레이크의 미스터리한 이야기'
+                },
+                {
+                    id: 'bridge-terabithia',
+                    title: 'Bridge to Terabithia',
+                    author: 'Katherine Paterson',
+                    icon: '🌉',
+                    description: '상상의 왕국 테라비시아로의 모험'
+                },
+                {
+                    id: 'wonder',
+                    title: 'Wonder',
+                    author: 'R.J. Palacio',
+                    icon: '⭐',
+                    description: '얼굴이 다른 소년 어기의 용기있는 이야기'
+                }
+            ],
+            5: [
+                {
+                    id: 'book-thief',
+                    title: 'The Book Thief',
+                    author: 'Markus Zusak',
+                    icon: '📚',
+                    description: '2차 대전 중 독일, 책을 훔치는 소녀의 이야기'
+                },
+                {
+                    id: 'man-called-ove',
+                    title: 'A Man Called Ove',
+                    author: 'Fredrik Backman',
+                    icon: '👨',
+                    description: '까칠한 노인 오베의 감동적인 변화'
+                },
+                {
+                    id: 'tkam',
+                    title: 'To Kill a Mockingbird',
+                    author: 'Harper Lee',
+                    icon: '🦅',
+                    description: '1930년대 미국 남부의 인종차별을 다룬 고전'
+                }
+            ]
+        };
+
+        let selectedLevel = null;
+        let selectedBook = null;
+
+        function selectLevel(level) {
+            selectedLevel = level;
+            
+            // 모든 레벨 카드에서 선택 해제
+            document.querySelectorAll('.level-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 선택된 레벨 카드 표시
+            document.querySelector(`[data-level="${level}"]`).classList.add('selected');
+            
+            // 도서 선택 섹션 표시
+            showBookSelection(level);
+            
+            // 선택 초기화
+            selectedBook = null;
+            updateStartButton();
+        }
+
+        function showBookSelection(level) {
+            const bookSelection = document.getElementById('book-selection');
+            const booksGrid = document.getElementById('books-grid');
+            
+            // 도서 목록 생성
+            booksGrid.innerHTML = '';
+            const books = levelBooks[level];
+            
+            books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.onclick = () => selectBook(book.id);
+                bookCard.setAttribute('data-book', book.id);
+                
+                bookCard.innerHTML = `
+                    <div class="book-cover">${book.icon}</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">by ${book.author}</div>
+                    <div class="book-level">Level ${level}</div>
+                    <div class="book-description">${book.description}</div>
+                `;
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            // 애니메이션과 함께 표시
+            bookSelection.classList.add('show');
+        }
+
+        function selectBook(bookId) {
+            selectedBook = bookId;
+            
+            // 모든 도서 카드에서 선택 해제
+            document.querySelectorAll('.book-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 선택된 도서 카드 표시
+            document.querySelector(`[data-book="${bookId}"]`).classList.add('selected');
+            
+            updateStartButton();
+            
+            // 도서 선택 시 확인 후 시작
+            const book = levelBooks[selectedLevel].find(b => b.id === bookId);
+            if (confirm(`${book.title} 레벨테스트를 시작하시겠습니까?\n\n📚 도서: ${book.title}\n📊 레벨: Level ${selectedLevel}\n❓ 문제 수: 60문제\n⏱️ 제한 시간: 90분`)) {
+                window.location.href = `/level-test/start/${selectedLevel}/${bookId}`;
+            }
+            updateSummary();
+        }
+
+        function updateStartButton() {
+            const startButton = document.getElementById('start-button');
+            const studentName = document.getElementById('student-name').value.trim();
+            
+            if (selectedLevel && selectedBook && studentName) {
+                startButton.disabled = false;
+            } else {
+                startButton.disabled = true;
+            }
+        }
+
+        function updateSummary() {
+            if (selectedLevel && selectedBook) {
+                const book = levelBooks[selectedLevel].find(b => b.id === selectedBook);
+                const summaryDiv = document.getElementById('selection-summary');
+                const summaryContent = document.getElementById('summary-content');
+                
+                summaryContent.innerHTML = `
+                    <strong>선택된 레벨:</strong> Level ${selectedLevel} (${getLevelName(selectedLevel)})<br>
+                    <strong>선택된 도서:</strong> ${book.title} by ${book.author}<br>
+                    <strong>테스트 범위:</strong> 챕터 1-5 (총 60문제)<br>
+                    <strong>합격 기준:</strong> 평균 80점 이상
+                `;
+                
+                summaryDiv.style.display = 'block';
+            }
+        }
+
+        function getLevelName(level) {
+            const names = {
+                1: '초급 (Beginner)',
+                2: '초중급 (Elementary)', 
+                3: '중급 (Intermediate)',
+                4: '중고급 (Upper-Intermediate)',
+                5: '고급 (Advanced)'
+            };
+            return names[level];
+        }
+
+        function startTest() {
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentGrade = document.getElementById('student-grade').value;
+            
+            if (!studentName) {
+                alert('이름을 입력해주세요.');
+                document.getElementById('student-name').focus();
+                return;
+            }
+            
+            if (!selectedLevel || !selectedBook) {
+                alert('레벨과 도서를 선택해주세요.');
+                return;
+            }
+            
+            const book = levelBooks[selectedLevel].find(b => b.id === selectedBook);
+            
+            // 확인 메시지
+            if (confirm(`${studentName}님, 레벨테스트를 시작하시겠습니까?\n\n📚 도서: ${book.title}\n📊 레벨: Level ${selectedLevel}\n❓ 문제 수: 60문제\n⏱️ 제한 시간: 90분\n🎯 합격 기준: 80점 이상\n\n시작하면 중간에 나갈 수 없습니다.`)) {
+                
+                // 테스트 정보 저장
+                const testInfo = {
+                    studentName,
+                    studentGrade,
+                    selectedLevel,
+                    selectedBook,
+                    bookTitle: book.title,
+                    bookAuthor: book.author,
+                    startTime: new Date().toISOString()
+                };
+                
+                sessionStorage.setItem('levelTestInfo', JSON.stringify(testInfo));
+                
+                // 테스트 페이지로 이동
+                window.location.href = `/level-test/start/${selectedLevel}/${selectedBook}`;
+            }
+        }
+
+        // 이벤트 리스너
+        document.getElementById('student-name').addEventListener('input', updateStartButton);
+        document.getElementById('student-name').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startTest();
+            }
+        });
+
+        // 페이지 로드 애니메이션
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.level-card, .info-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

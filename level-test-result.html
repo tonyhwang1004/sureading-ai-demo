@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레벨테스트 결과 - 수리딩어학원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .result-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .result-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .student-info {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .book-info {
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .score-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .score-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .grade-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .pass-status {
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 15px 30px;
+            border-radius: 25px;
+            margin: 20px auto;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .pass-status.passed {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .pass-status.failed {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .chapter-analysis {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .chapter-card.excellent {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #28a74510, #20c99710);
+        }
+
+        .chapter-card.good {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+        }
+
+        .chapter-card.needs-work {
+            border-color: #ffc107;
+            background: linear-gradient(135deg, #ffc10710, #fd7e1410);
+        }
+
+        .chapter-card.poor {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #dc354510, #c8233310);
+        }
+
+        .chapter-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .chapter-score {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .chapter-detail {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .recommendations {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommendation-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .strengths-weaknesses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .strength-list, .weakness-list {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .strength-list {
+            border-left: 4px solid #28a745;
+        }
+
+        .weakness-list {
+            border-left: 4px solid #dc3545;
+        }
+
+        .list-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .list-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .primary-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .success-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .test-details {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .result-container {
+                padding: 10px;
+            }
+            
+            .result-header, .score-section, .chapter-analysis, .recommendations {
+                padding: 25px 20px;
+            }
+            
+            .strengths-weaknesses {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .grade-display {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <!-- SureReading 새 시스템 번들 -->
+    <script src="static/js/books-bundle.js"></script>
+</head>
+<body>
+    <div class="result-container">
+        <!-- 결과 헤더 -->
+        <div class="result-header">
+            <div class="result-icon" id="result-icon">🎉</div>
+            <h1 class="result-title" id="result-title">테스트 완료!</h1>
+            <div class="student-info" id="student-info">홍길동님의 레벨테스트 결과</div>
+            <div class="book-info" id="book-info">The Book Thief by Markus Zusak</div>
+        </div>
+
+        <!-- 점수 섹션 -->
+        <div class="score-section">
+            <div class="grade-display" id="grade-display">B+</div>
+            <div class="pass-status passed" id="pass-status">🎊 합격! 축하합니다!</div>
+            
+            <div class="score-grid">
+                <div class="score-card">
+                    <div class="score-value" id="correct-answers" style="color: #28a745;">48</div>
+                    <div class="score-label">정답 수</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="total-questions" style="color: #667eea;">60</div>
+                    <div class="score-label">총 문제</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="percentage" style="color: #fd7e14;">80%</div>
+                    <div class="score-label">정답률</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-value" id="time-spent" style="color: #6f42c1;">75분</div>
+                    <div class="score-label">소요 시간</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 테스트 상세 정보 -->
+        <div class="test-details">
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">테스트 날짜</div>
+                    <div class="detail-value" id="test-date">2024.06.18</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">레벨</div>
+                    <div class="detail-value" id="test-level">Level 5</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">합격 기준</div>
+                    <div class="detail-value">80% 이상</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">등급</div>
+                    <div class="detail-value" id="final-grade">B+</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 챕터별 분석 -->
+        <div class="chapter-analysis">
+            <h2 class="section-title">📊 챕터별 성과 분석</h2>
+            <div class="chapter-grid" id="chapter-grid">
+                <div class="chapter-card excellent">
+                    <div class="chapter-number">Chapter 1</div>
+                    <div class="chapter-score" style="color: #28a745;">11/12</div>
+                    <div class="chapter-detail">92% - 우수</div>
+                </div>
+                <div class="chapter-card good">
+                    <div class="chapter-number">Chapter 2</div>
+                    <div class="chapter-score" style="color: #667eea;">10/12</div>
+                    <div class="chapter-detail">83% - 양호</div>
+                </div>
+                <div class="chapter-card good">
+                    <div class="chapter-number">Chapter 3</div>
+                    <div class="chapter-score" style="color: #667eea;">9/12</div>
+                    <div class="chapter-detail">75% - 양호</div>
+                </div>
+                <div class="chapter-card needs-work">
+                    <div class="chapter-number">Chapter 4</div>
+                    <div class="chapter-score" style="color: #ffc107;">9/12</div>
+                    <div class="chapter-detail">75% - 보완필요</div>
+                </div>
+                <div class="chapter-card good">
+                    <div class="chapter-number">Chapter 5</div>
+                    <div class="chapter-score" style="color: #667eea;">9/12</div>
+                    <div class="chapter-detail">75% - 양호</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 추천사항 -->
+        <div class="recommendations">
+            <h2 class="section-title">💡 학습 분석 및 추천사항</h2>
+            
+            <div class="recommendation-text" id="recommendation-text">
+                축하합니다! The Book Thief 테스트를 성공적으로 통과하셨습니다. 
+                전반적으로 우수한 독해 실력을 보여주셨으며, 특히 스토리의 초반부 이해가 뛰어납니다.
+                다음 레벨의 도서에 도전하거나 같은 레벨의 다른 작품을 읽어보시기를 추천합니다.
+            </div>
+
+            <div class="strengths-weaknesses">
+                <div class="strength-list">
+                    <div class="list-title">
+                        <span>💪</span>
+                        <span>강점 영역</span>
+                    </div>
+                    <div class="list-item">Chapter 1: 등장인물 이해</div>
+                    <div class="list-item">Chapter 2: 스토리 전개</div>
+                    <div class="list-item">전반적인 독해력</div>
+                </div>
+                
+                <div class="weakness-list">
+                    <div class="list-title">
+                        <span>📈</span>
+                        <span>보완 영역</span>
+                    </div>
+                    <div class="list-item">Chapter 4: 복잡한 관계 이해</div>
+                    <div class="list-item">고급 어휘 학습</div>
+                    <div class="list-item">문맥 추론 능력</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/level-test" class="action-btn secondary-btn">
+                    🔄 다른 테스트 보기
+                </a>
+                <a href="/" class="action-btn primary-btn">
+                    🏠 홈으로 돌아가기
+                </a>
+                <a href="#" class="action-btn success-btn" onclick="printResult()">
+                    🖨️ 결과 출력하기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 결과 데이터 로드 및 표시
+        function loadTestResults() {
+            // sessionStorage에서 결과 데이터 가져오기
+            const results = JSON.parse(sessionStorage.getItem('levelTestResults') || '{}');
+            
+            if (Object.keys(results).length === 0) {
+                // 결과 데이터가 없으면 샘플 데이터 사용
+                displaySampleResults();
+                return;
+            }
+            
+            // 실제 결과 표시
+            displayResults(results);
+        }
+
+        function displaySampleResults() {
+            // 샘플 결과 데이터 (실제로는 서버에서 받아옴)
+            const sampleResults = {
+                student_name: '홍길동',
+                book_title: 'The Book Thief',
+                book_author: 'Markus Zusak',
+                level: 5,
+                correct_answers: 48,
+                total_questions: 60,
+                percentage: 80,
+                grade: 'B',
+                passed: true,
+                time_spent: 75 * 60, // 75분을 초로 변환
+                chapter_analysis: {
+                    chapter_1: { correct: 11, total: 12, percentage: 91.7 },
+                    chapter_2: { correct: 10, total: 12, percentage: 83.3 },
+                    chapter_3: { correct: 9, total: 12, percentage: 75.0 },
+                    chapter_4: { correct: 9, total: 12, percentage: 75.0 },
+                    chapter_5: { correct: 9, total: 12, percentage: 75.0 }
+                }
+            };
+            
+            displayResults(sampleResults);
+        }
+
+        function displayResults(results) {
+            // 기본 정보 업데이트
+            document.getElementById('student-info').textContent = `${results.student_name}님의 레벨테스트 결과`;
+            document.getElementById('book-info').textContent = `${results.book_title} by ${results.book_author}`;
+            
+            // 점수 정보 업데이트
+            document.getElementById('correct-answers').textContent = results.correct_answers;
+            document.getElementById('total-questions').textContent = results.total_questions;
+            document.getElementById('percentage').textContent = `${results.percentage}%`;
+            
+            const timeMinutes = Math.floor(results.time_spent / 60);
+            document.getElementById('time-spent').textContent = `${timeMinutes}분`;
+            
+            // 등급 및 합격 상태
+            document.getElementById('grade-display').textContent = results.grade;
+            document.getElementById('final-grade').textContent = results.grade;
+            
+            const passStatus = document.getElementById('pass-status');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            
+            if (results.passed) {
+                passStatus.className = 'pass-status passed';
+                passStatus.innerHTML = '🎊 합격! 축하합니다!';
+                resultIcon.textContent = '🎉';
+                resultTitle.textContent = '테스트 통과!';
+            } else {
+                passStatus.className = 'pass-status failed';
+                passStatus.innerHTML = '📚 재시험 권장';
+                resultIcon.textContent = '📖';
+                resultTitle.textContent = '조금 더 노력해보세요!';
+            }
+            
+            // 테스트 날짜
+            const today = new Date();
+            document.getElementById('test-date').textContent = 
+                `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+            
+            document.getElementById('test-level').textContent = `Level ${results.level}`;
+            
+            // 챕터별 분석 업데이트
+            updateChapterAnalysis(results.chapter_analysis);
+            
+            // 추천사항 업데이트
+            updateRecommendations(results);
+        }
+
+        function updateChapterAnalysis(chapterData) {
+            const chapterGrid = document.getElementById('chapter-grid');
+            chapterGrid.innerHTML = '';
+            
+            for (let i = 1; i <= 5; i++) {
+                const chapter = chapterData[`chapter_${i}`];
+                if (chapter) {
+                    const percentage = chapter.percentage;
+                    let className = 'chapter-card ';
+                    let color = '';
+                    let status = '';
+                    
+                    if (percentage >= 90) {
+                        className += 'excellent';
+                        color = '#28a745';
+                        status = '우수';
+                    } else if (percentage >= 80) {
+                        className += 'good';
+                        color = '#667eea';
+                        status = '양호';
+                    } else if (percentage >= 70) {
+                        className += 'needs-work';
+                        color = '#ffc107';
+                        status = '보완필요';
+                    } else {
+                        className += 'poor';
+                        color = '#dc3545';
+                        status = '미흡';
+                    }
+                    
+                    const chapterCard = document.createElement('div');
+                    chapterCard.className = className;
+                    chapterCard.innerHTML = `
+                        <div class="chapter-number">Chapter ${i}</div>
+                        <div class="chapter-score" style="color: ${color};">${chapter.correct}/${chapter.total}</div>
+                        <div class="chapter-detail">${Math.round(percentage)}% - ${status}</div>
+                    `;
+                    
+                    chapterGrid.appendChild(chapterCard);
+                }
+            }
+        }
+
+        function updateRecommendations(results) {
+            let recommendationText = '';
+            
+            if (results.passed) {
+                recommendationText = `축하합니다! ${results.book_title} 테스트를 성공적으로 통과하셨습니다. 
+                    전반적으로 우수한 독해 실력을 보여주셨으며, 다음 레벨의 도서에 도전하거나 
+                    같은 레벨의 다른 작품을 읽어보시기를 추천합니다.`;
+            } else {
+                recommendationText = `${results.book_title}를 다시 한 번 읽어보시고 
+                    특히 약점으로 나타난 챕터들을 중점적으로 복습하신 후 재시험을 보시기를 추천합니다.`;
+            }
+            
+            document.getElementById('recommendation-text').textContent = recommendationText;
+        }
+
+        function printResult() {
+            window.print();
+        }
+
+        // 페이지 로드 시 결과 표시
+        window.addEventListener('load', loadTestResults);
+    </script>
+</body>
+</html>
