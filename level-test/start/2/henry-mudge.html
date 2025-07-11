@@ -4,11 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>👦 Henry and Mudge - Sue Reading Academy</title>
-    <script>
-        window.location.href = 'https://tonyhwang1004.github.io/sureading-ai-demo/quiz.html?book=HM001&slug=henry-mudge&level=2';
-    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            color: white;
+        }
+        .redirect-card {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #45B7D1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn {
+            background: #45B7D1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <p>👦 Henry and Mudge 페이지로 이동 중...</p>
+    <div class="redirect-card">
+        <h1>👦 Henry and Mudge</h1>
+        <h2>🏫 Sue Reading Academy Level Test</h2>
+        <div class="spinner"></div>
+        <p><strong>Level 2 영어 레벨테스트</strong></p>
+        <p>Henry and Mudge 문제로 실력을 진단합니다...</p>
+        <div id="countdown">3초 후 자동 이동</div>
+        
+        <div style="margin-top: 30px;">
+            <button class="btn" onclick="goToTest()">🎯 지금 바로 시작</button>
+            <a href="../../../books.html" class="btn" style="background: #6c757d;">📚 다른 책 선택</a>
+        </div>
+    </div>
+
+    <script>
+        let countdown = 3;
+        
+        function updateCountdown() {
+            document.getElementById('countdown').textContent = countdown + '초 후 자동 이동';
+            countdown--;
+            
+            if (countdown < 0) {
+                goToTest();
+            }
+        }
+        
+        function goToTest() {
+            // 올바른 경로로 리다이렉트
+            window.location.href = '../../../level-test-execute.html?book=HM001&level=2&title=Henry%20and%20Mudge';
+        }
+        
+        setInterval(updateCountdown, 1000);
+        
+        console.log('👦 Henry and Mudge 레벨테스트 페이지 로드됨');
+    </script>
 </body>
 </html>
